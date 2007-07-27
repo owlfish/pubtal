@@ -1,0 +1,110 @@
+<Content *.txt>
+content-type HTMLText
+</Content>
+
+<Content weblog>
+header author Colin
+</Content>
+
+<Content weblog/2004/03/01/12:33.post>
+header author Guest Author
+</Content>
+
+<Content weblog *.sxw>
+content-type Weblog
+weblog-content-type OpenOffice
+</Content>
+
+<Content filetype: *.sxw directory: weblog>
+</Content>
+
+<Content weblog/*.sxw>
+</Content>
+
+Layout:
+	one.txt
+	two.txt
+	adir/one.txt
+	adir/two.txt
+	adir/three.txt
+	
+<Content three.txt>
+</Content>
+
+Should this match nothing (no such file!) or adir/three.txt?
+
+What about:
+<Content two.txt>
+</Content>
+
+Does this just apply to two.txt or does it also apply to adir/two.txt?
+
+Need a default, and a way of over-riding the default.
+e.g.
+	<Content file: two.txt>
+	</Content>
+	
+	Order of parsing would be:
+		Look for 'file:' 
+		Look for 'directory:'
+		Look for 'pattern:'
+		
+		Example of a file match:
+			weblog/this/that/afile.txt
+		Can also act as a fnmatch - look for afile.txt in only the weblog/this/that/
+		
+		
+	Alternative:
+	<Content pattern: two.txt>
+	</Content>
+	
+	
+Alternative - match paths not filenames.
+
+Example:
+	<Content two.txt> - just match the two.txt file.
+	<Content */two.txt> - match all two.txt files.
+	<Content *.sxw> - match all sxw files.
+	<Content weblog/*.sxw> - match all sxw files in weblog directory or deeper
+	
+	Longer match would take precidence.
+	
+	
+Conclusion:
+	Parsing logic should be:
+		If file exists - is a file.
+		If directory exists - is a directory.
+		Else:
+			Is a pattern.  
+			Priority:
+				Deepest directory has higest priority.
+				
+	Mixture of directory and pattern:
+		<Content weblog/*.txt>
+		should take priority over <Content weblog>
+		
+					
+Limitations:
+	If a file exists with the same name as a pattern that is being matched then the pattern will not take.
+	
+Implementation:
+	Change fileTypeMap to patternMap
+	Each key will be a directory, with an empty value for root level file types.
+	The value is a list of tuples (fnmatch expressions, config item)
+	
+	While looping over directories check for patternMap entries.
+	For each entry in the patternMap check for matches.
+	
+Issues:
+	We would like <Content> to take precidence over *.txt
+	<Content weblog/*.txt> should overridge <Content weblog>
+	
+	Could we have:
+		<Content *.txt> override <Content>
+		<Content weblog/*.txt> override <Content weblog>
+		
+	or:
+		<Content> overrides <Content *.txt>
+		<Content weblog> overrides <Content weblog/*.txt>
+		
+		

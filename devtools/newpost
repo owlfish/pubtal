@@ -1,0 +1,67 @@
+#!/bin/bash
+
+WEBLOG_CONTENT_DIR="/home/cms103/Documents/owlfish.com/content/weblog"
+SITE_CONFIG="/home/cms103/Documents/owlfish.com/website.config"
+UPDATE_SITE="/usr/bin/updateSite.py"
+UPLOAD_SITE="/usr/bin/uploadSite.py"
+UPLOAD="$UPLOAD_SITE $SITE_CONFIG"
+BUILD="$UPDATE_SITE $SITE_CONFIG"
+EDITOR=/usr/bin/gedit
+
+POSTDATE=`date +"%Y-%m-%d %H:%M:%S"`
+YEAR=`date +%Y`
+MONTH=`date +%m`
+DAY=`date +%d`
+TIME=`date +%H:%M`
+
+if [ ! -d "$WEBLOG_CONTENT_DIR" ]; then
+  echo "Weblog directory $WEBLOG_CONTENT_DIR does not exist!"
+  exit -1;
+fi
+
+# Start by creating directories as required.
+POST_DIR="$WEBLOG_CONTENT_DIR/$YEAR/$MONTH/$DAY"
+POST_FILE="$POST_DIR/$TIME".post
+
+mkdir -p "$POST_DIR"
+if [ -f "$POST_FILE" ]; then
+  echo "Existing post found, will open..."
+else
+  echo "Creating new post $POSTDATE."
+  echo "creation-date: $POSTDATE" > "$POST_FILE"
+  echo -n "title: " >> "$POST_FILE"
+fi;
+
+$EDITOR "$POST_FILE" &
+running=1
+while [ $running -eq 1 ]; do
+  echo "[b]uild, [d]elete post, [u]pload, [q]uit."
+  read -n 1 KEY
+  echo " "
+  if [ "$KEY" == "b" ];
+  then
+    echo "Building post."
+    $BUILD "$POST_FILE";
+  elif [ "$KEY" == "d" ];
+  then 
+    echo 'Really delete this post (y/N)?'
+    read -n 1 ANSKEY
+    echo " "
+    if [ "$ANSKEY" == "y" ];
+    then
+      echo 'Deleting post (this will not clean directories)...'
+      rm "$POST_FILE";
+    else
+      echo "Leaving post intact.";
+    fi;
+  elif [ "$KEY" == "q" ];
+  then
+    echo "Done."
+    exit 0;
+  elif [ "$KEY" == "u" ];
+  then
+    echo "Uploading..."
+    $UPLOAD;
+  fi;
+done;
+

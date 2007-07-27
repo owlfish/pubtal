@@ -1,0 +1,16 @@
+Open office style options (all of these are attirbutes on style:properties inside <style:style style:family="graphics"> ):
+	style:wrap: none | left | right | parallel | dynamic | run-through
+	CSS:
+	
+	style:vertical-pos: from-top | top | middle | bottom
+	(from-type means svg:y has offset)
+	CSS:
+	
+	style:horizontal-pos: from-left | left | center | right | from-inside | inside | outside
+	(from-left & from-inside means svg:x has offset.)
+	CSS: Treat inside=left, outside=right
+	
+	fo:border: size style colour
+	CSS: border
+	
+	
