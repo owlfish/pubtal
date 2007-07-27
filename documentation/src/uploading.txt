@@ -1,0 +1,17 @@
+title: Uploading
+subject: Automatic uploading using PubTal.
+
+PubTal can automatically upload a website to an FTP server.  To enable this feature, one or more &lt;Upload&gt; directives must be added to the site's <a href="conf/conf.html">configuration file</a>.  
+
+To determine what files require uploading, PubTal uses the following technique:
+<ul>
+	<li>When PubTal writes a file, it records a checksum for the file (stored in the PubTalData/localCache file by default).</li>
+	<li>When PubTal uploads a file, it records the checksum of the file it uploaded (stored in a server-specific file in PubTalData/).</li>
+	<li>When asked to upload a site, PubTal compares the two checksum files.  If there is a new file, or different checksum for an existing file in the localCache, then it will upload the file.</li>
+</ul>
+
+Normally PubTal will not upload files that it didn't generate, however this can be overridden by passing the --all command option to uploadSite.py.  This causes uploadSite.py to checksum all files that PubTal didn't generate, and again compare them to the upload checksum file.
+
+PubTal can be forced to upload files that it thinks haven't changed by using the --force command option.  Similarly PubTal can mark files as being up-to-date by using the --uptodate command option.
+
+A full list of the different command options available are given in the <a href="command.html">Commands Reference</a>.

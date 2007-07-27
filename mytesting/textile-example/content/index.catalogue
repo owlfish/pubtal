@@ -1,0 +1,18 @@
+title: Test table of contents
+subject: Catalogues with the option 'catalogue-item-htmltext' can be used for table of contents.
+
+filename: one.chapter
+title: Chapter One
+description: An introduction chapter
+
+filename: two.chapter
+title: Chapter Two
+description: A second chapter
+
+filename: three.chapter
+title: Chapter Three
+description: The final chapter!
+
+filename: extra/four.chapter
+title: Extra chapter
+description: This is in a sub-directory.

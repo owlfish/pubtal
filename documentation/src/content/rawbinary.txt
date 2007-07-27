@@ -1,0 +1,17 @@
+title: Raw & Binary
+subject: Using the Raw and Binary content types.
+
+<h2>Raw</h2>
+The raw content type is similar to the HTMLText type, except that no new tags are added to the PubTal output, and so the author must enter all tags manually.  For example:
+
+<pre><code>title: Raw content test
+
+&lt;p&gt;This is the first paragraph - note the tags!&lt;/p&gt;
+&lt;p&gt;And this is the second paragraph.&lt;/p&gt;
+</code></pre>
+
+To specify which files are treated as Raw please refer to the <a href="../conf/conf.html">Configuration</a> section.
+
+<h2>Binary</h2>
+The Binary content type does a straight copy of the content file to the destination directory, creating any required directories.  No parsing of the content file is done and no template is used.  To specify which files are treated as Binary please refer to the <a href="../conf/conf.html">Configuration</a> section.
+

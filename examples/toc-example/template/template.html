@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+  <title tal:content="page/headers/title">Table of content example</title>
+  <link rel="stylesheet" tal:attributes="href string:${page/depth}style/site.css" type="text/css">  
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="author" tal:attributes="content pages/headers/author">   
+</head>
+<body>
+	<h1 tal:content="page/headers/title"></h1>
+	<h2 tal:content="page/headers/subject"></h2>
+	<div>
+		<ul>
+			<li tal:repeat="chapter catalogue/entries"><a tal:attributes="href chapter/destinationPath" tal:content="chapter/headers/title"></a></li>
+		</ul>
+	
+	</div>
+	<div id="footer">
+		<p tal:replace="structure pubtal/linkText">Link</p>
+	</div>
+</body>
+</html>

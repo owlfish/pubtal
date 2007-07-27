@@ -1,0 +1,30 @@
+title: Plugin API
+description: Documentation on how to write PubTal plugins.
+
+PubTal plugins allow the functionality of PubTal to be expanded and customised.  Currently support for new content types and new upload methods can be added using plugins.
+
+<h2>Plugin Interface</h2>
+Plugins are implemented as Python modules which are placed in either the site-packages/pubtal/plugins directory, or in a directory specified using the <i>additional-plugins-dir</i> configuration option.  All plugins must implement a module level function called <i>getPluginInfo()</i> which returns a list of the functionality provided by this plugin.  The list is comprised of dictionaries that describe the functionality provided by this plugin and provide additional information to PubTal about that functionality.
+
+Each dictionary in the list returned from getPluginInfo() must have a key "functionality".  Legal values of for this key are currently :
+<ul>
+	<li>"content" - This plugin provides a new content type.</li>
+	<li>"upload-method" - This plugin provides a new upload method.</li>
+</ul>
+
+<h2>Additional Content Types</h2>
+In addition to the key "functionality" having a value of "content", the dictionary must also contain the following keys:
+<ul>
+	<li>"content-type" (Mandatory) - A name for the type of content support provided.</li>
+	<li>"class" (Mandatory) - The class which provides this support must be derived from SitePublisher.ContentPublisher.</li>
+	<li>"file-type" (Optional) - The file type extension which this content type should be associated with by default.  This can be a list of file extensions if more than one type should be associated.</li>
+</ul>
+
+The two methods defined by SitePublisher.ContentPublisher (other than the constructor) which must be implemented are: <i>publish()</i> and <i>getPageContext()</i>
+
+<h2>Additional Upload Methods</h2>
+In addition to the key "functionality" having a value of "upload-method", the dictionary must also contain the following keys:
+<ul>
+	<li>"method-type" (Mandatory) - The name of the upload method (used in the configuration file).</li>
+	<li>"class" (Mandatory) - The class which provides support for this method must be derived from SiteUploader.UploadMethod.</li>
+</ul>

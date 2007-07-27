@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Commands Reference</title>
+	<link href="../style/site.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<h1>Commands Reference</h1>
+  <p id="subject">PubTal Commands Reference.</p>
+  <div><p>PubTal supplies two commands: updateSite.py and uploadSite.py.&nbsp; These are used to rebuild a website and upload a website respectively.</p>
+<h2>updateSite.py</h2>
+<p>This takes a minimum of one parameter, the location of the website configuration file.</p>
+<pre>updateSite.py [options] site.config [content-dir | content-file] [...]</pre>
+<p>The updateSite.py command first reads in the configuration file and so locates the content, template, and destination directories (defaulting to content, template, and dest respectively).&nbsp; If only one parameter is passed to updateSite.py, it will then find each file under the content directory and build the corresponding output files.</p>
+<p>If more than one parameter is passed, then each extra parameter is taken as content to build.&nbsp; If the parameter is a directory under the content directory, then any content files in that directory will be built recursively.&nbsp; If the parameter is a file in the content directory (or one of its children), then just that file will be built.</p>
+<p>Take for example:</p>
+<pre>updateSite.py new-site/site.config new-site/content/index.txt new-site/content/examples/</pre>
+<p>This will build the index.txt file into index.html and all content files under content/examples/ will be built into their corresponding output files.</p>
+<h3>options</h3>
+<p>The following options are supported:</p>
+<ul>
+	<li>-h | --help - Prints out the help description for the command.</li>
+	<li>-a | --all - Builds all classes of content, not just content in the "normal" class.</li>
+	<li>--class classParams - Builds all classes given as supplied in a comma separated list.</li>
+	<li>--logging - Turns on logging.</li>
+	<li>--logfile name - Logs to the file "name" (defaults to updateSite.log).</li>
+	<li>--debug - Turns on debug logging; implies --logging.</li>
+	<li>--debug-simpletal - Turns on debug logging of SimpleTAL, implies --logging.</li>
+</ul>
+<h2>uploadSite.py</h2>
+<p>This takes a minimum of one parameter, the location of the website configuration file.</p>
+<pre>uploadSite.py [options] site.config [destination-dir | destination-file] [...]</pre>
+<p>The uploadSite.py command first reads in the configuration file and so locates the destination directories.&nbsp; If only one parameter is passed to uploadSite.py, it will then find each file under the destination directory that needs to be uploaded.&nbsp; The logic used to determine whether a file needs to be uploaded is explained in the <a href="uploading.html">Uploading section</a>.</p>
+<p>If more than one parameter is passed, then each extra parameter is taken as destination to upload.&nbsp; If the parameter is a directory under the destination directory then any files in that directory will be considered for upload recursively.&nbsp; If the parameter is a file in the destination directory (or one of its children), then just that file will be considered for upload.</p>
+<p>Take for example:</p>
+<pre>uploadSite.py new-site/site.config new-site/dest/index.html new-site/dest/examples/</pre>
+<p>This will examine the index.html file and all files under dest/examples/ when determining what files to upload.</p>
+<h3>options</h3>
+<p>The following options are supported:</p>
+<ul>
+	<li>-h | --help - Prints out the help description for the command.</li>
+	<li>-a | --all - Checks all files are uploaded, not just PubTal generated ones.</li>
+	<li>--force - Uploads files even if PubTal thinks they are up-to-date.</li>
+	<li>--dry-run - Prints out what would have been done, but takes no action.</li>
+	<li>--logging - Turns on logging.</li>
+	<li>--logfile name - Logs to the file "name" (defaults to updateSite.log).</li>
+	<li>--debug - Turns on debug logging; implies --logging.</li>
+</ul>
+</div>
+	  
+	
+  <div class="navbar">
+  <a href="index.html" title="Contents">Contents</a>
+  </div>
+  <p id="version">PubTal Version 3.2.0</p>
+  <div id="footer">
+  <p>File: command.txt</p>
+  <p>Last modified: Sun, 25 Apr 2004 05:08:18 BST</p>
+  <p>Copyright 2006 Colin Stewart</p>
+  <p title="PubTal is a template driven web site publisher.">Made with <a href="http://www.owlfish.com/software/PubTal/">PubTal</a> 3.2.0</p>
+  </div>
+</body>

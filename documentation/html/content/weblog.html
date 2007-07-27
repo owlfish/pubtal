@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Writing a Weblog using PubTal</title>
+	<link href="../../style/site.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<h1>Writing a Weblog using PubTal</h1>
+  <p id="subject">How to use PubTal to maintain a weblog.</p>
+  <div><p>PubTal's weblog support allows posts to be authored using any Content Type that produces a "page/content" property, such as HTMLText or OpenOffice.&nbsp; </p>
+<p>PubTal can generate several different types of page depending on the site configuration, but the layout of the pages is fixed as follows:</p>
+<table><thead><tr><th><p style="text-align:center;font-weight:bold;font-style:italic">Page Type</p>
+</th><th><p style="text-align:center;font-weight:bold;font-style:italic">Location</p>
+</th><th><p style="text-align:center;font-weight:bold;font-style:italic">Notes</p>
+</th></tr></thead><tbody><tr><td><p>Index page.</p>
+</td><td><p>index.extension</p>
+</td><td><p>The extension is taken from the template.</p>
+</td></tr><tr><td><p>Day page.</p>
+</td><td><p>yyyy/mm/ddmmyyyy.extension</p>
+</td><td><p>The extension is taken from the template.</p>
+</td></tr><tr><td><p>Syndication pages.</p>
+</td><td><p>templatename.extension</p>
+</td><td><p>The name of each syndication page is taken from the corresponding template name.</p>
+</td></tr><tr><td><p>Archive pages.</p>
+</td><td><p>yyyy/mm/archive.extension.</p>
+</td><td><p>The extension is taken from the template.</p>
+</td></tr></tbody></table>
+<p></p>
+<p>Two examples of how to use the Weblog content type can be found in the examples directory.&nbsp; The basic-weblog example shows the simplest weblog configuration possible, while full-weblog includes all of the features PubTal supports.</p>
+<h2>Configuration Options</h2>
+<p>With no configuration options set the PubTal Weblog plugin will assume the following configuration:</p>
+<ol><li><p>The weblog index template is 'template.html'</p>
+</li><li><p>No day, month, or syndication templates exist.</p>
+</li><li><p>The weblog is called 'Weblog'.</p>
+</li><li><p>All *.post files are written in HTMLText format, and are in the same directory that the index will be generated in.</p>
+</li><li><p>The latest 5 posts should be included in the weblog index.</p>
+</li></ol>
+<h3>General Configuration</h3>
+<p>The following configuration options are applicable to the whole weblog:</p>
+<table><thead><tr><th><p style="text-align:center;font-weight:bold;font-style:italic">Option</p>
+</th><th><p style="text-align:center;font-weight:bold;font-style:italic">Value</p>
+</th></tr></thead><tbody><tr><td><p>weblog-name</p>
+</td><td><p>The name of this weblog.</p>
+</td></tr><tr><td><p>weblog-index-template</p>
+</td><td><p>The name of the template to use to generate the index page.</p>
+</td></tr><tr><td><p>weblog-day-template</p>
+</td><td><p>When defined PubTal will use this template to build one page per day.&nbsp; The pages are generated in <code>weblog-dir/yyyy/mm/ddmmyyyy.extension</code>.</p>
+</td></tr><tr><td><p>weblog-month-template</p>
+</td><td><p>When defined PubTal will use this template to build one page per month.&nbsp; The pages are generated in <code>weblog-dir/yyyy/mm/archive.extension</code>.</p>
+</td></tr><tr><td><p>weblog-syndication-template</p>
+</td><td><p>This option can be given multiple times in a single directive.&nbsp; Each option corresponds to a syndication&nbsp; <span style="font-style:italic">template</span>.&nbsp; </p>
+<p>See <a href="#SyndicationOptions">later sections</a> for options required to support the different syndication formats.</p>
+</td></tr><tr><td><p>weblog-post-depth</p>
+</td><td><p>The depth of the weblog's posts from the base directory.&nbsp; E.g. if posts are kept in weblog/yyyy/mm/name.post then weblog-post-depth should be set to 2.</p>
+<p>The location of the weblog posts is independent of where the resulting day and monthly archive pages are located.</p>
+</td></tr><tr><td><p>weblog-index-size</p>
+</td><td><p>How many posts should be visible on the index page and in the syndication feeds.</p>
+</td></tr><tr><td><p>weblog-content-type</p>
+</td><td><p>The PubTal content type that posts are written in.&nbsp; Defaults to HTMLText</p>
+</td></tr></tbody></table>
+<h2>Required Headers</h2>
+<p>When authoring weblog posts in OpenOffice there are no specific headers required for PubTal's weblog support to work.&nbsp; It is recommended that the "title" property of the OpenOffice document be used to title the post, but this is not required.</p>
+<p>When using any other Content Type (e.g. HTMLText) <span style="font-weight:bold">one</span> of the following headers must be present:</p>
+<ol><li><p>CreationDate</p>
+</li><li><p>creationdate</p>
+</li><li><p>creation-date</p>
+</li></ol>
+<p>The value of the header must be the creation date/time of the post, in one of the following formats:</p>
+<ol><li><p>Y m d H:M:S.&nbsp; (e.g. 2004 01 08 17:01:01)</p>
+</li><li><p>Y m d H:M.&nbsp; (e.g. 2004 01 08 17:01)</p>
+</li><li><p>Y-m-d H:M:S.&nbsp; (e.g. 2004-01-08 17:01:01)</p>
+</li><li><p>Y-m-d H:M.&nbsp; (e.g. 2004-01-08 17:01)</p>
+</li></ol>
+<h2>Building Weblog pages</h2>
+<p>PubTal treats all new posts, and all posts that are in the index (i.e. that will appear on the index page), as being part of the "normal" class.&nbsp; This means that PubTal will check for any changes to existing posts that form part of the index, and check for new posts.</p>
+<p>When PubTal detects a changed or new post it will build the index, day, month, and syndication pages as applicable.&nbsp; If a new post is found that is the first in the month then all day and month pages will be built (configurable - see <a href="#ArchivePerformance">Monthly Archive Performance Notes</a>).</p>
+<p>To build all pages for all posts (for example after changing a template) run the updateSite.py command with the "--all" option.</p>
+<h2>Template Properties</h2>
+<p>In addition to the properties available to any other PubTal template, weblog templates have access to the additional properties, and no content property.</p>
+<h3>Index and Syndication properties.</h3>
+<p>Index and Syndication templates have access to these extra properties.</p>
+<ol><li><p>page</p>
+<ol><li><p>weblog-name.&nbsp; The name of this weblog.</p>
+</li><li><p>weblog-link.&nbsp; The absolute link for this weblog (available if hostname is defined).</p>
+</li><li><p>monthlyArchive.&nbsp; A <a href="#MonthlyArchiveObject">Monthly Archive object</a> holding information useful for providing links to the monthly archives.</p>
+</li><li><p>days.&nbsp; A <a href="#DayObject">Day object</a>, holding information about the days posts.</p>
+</li></ol>
+</li></ol>
+<h3>Day properties</h3>
+<p>The Day Template has, in addition to the properties of the Index template, one additional property:</p>
+<ol><li><p>dayDate.&nbsp; This is a Date Object with a default format of "%a[LONG], %d[NP] %b[LONG] %Y".&nbsp; (E.g. Thursday, 8 January 2004)</p>
+</li></ol>
+<h3>Month properties</h3>
+<p>The Month Template has, in addition to the properties of the Index template, several additional properties:</p>
+<ol><li><p>yearName.&nbsp; The year this month falls in (YYYY format).</p>
+</li><li><p>monthNameLong.&nbsp; The long form of the month name.</p>
+</li><li><p>monthNameShort.&nbsp; The short form of the month name.</p>
+</li></ol>
+<h3><a name="MonthlyArchiveObject"></a>Monthly Archive Object</h3>
+<p>Monthly archive objects will only be accessible if a weblog monthly archive is generated, i.e. if the weblog-month-template option is defined.</p>
+<p>A Monthly Archive object is a list, with one entry per year.&nbsp; Only months and years with a weblog post are present in the list.&nbsp; The properties of each entry in the list are:</p>
+<ol><li><p>yearName.&nbsp; The year that this entry is for as YYYY.</p>
+</li><li><p>monthList - List of month information, with one entry per month.</p>
+<ol><li><p>monthNameLong.&nbsp; E.g. January.</p>
+</li><li><p>monthNameShort&nbsp; E.g. Jan.</p>
+</li><li><p>monthNumber.&nbsp; E.g. 1</p>
+</li><li><p>archiveLink.&nbsp; The link from the current page to the archive page for this month.</p>
+</li></ol>
+</li></ol>
+<h3><a name="DayObject"></a>Day Object</h3>
+<p>Day objects are available to all weblog templates as a list in the 'days' property.&nbsp; Each entry in the 'days' list consists of the following properties:</p>
+<ol><li><p>date.&nbsp; This is a Date Object with a default format of "%a[LONG], %d[NP] %b[LONG] %Y".</p>
+</li><li><p>posts.&nbsp; A list of Post Objects that were made during this day.</p>
+</li></ol>
+<h3>Post Object</h3>
+<p>Post objects consist of the same properties that are normally present under the 'page' property for a normal PubTal page of the type used to create the weblog post.&nbsp; Additionally the Post object has the following properties:</p>
+<ol><li><p>permaLink.&nbsp; This is the link to the post within a day page.&nbsp; This is only present if the weblog-day-template configuration property is set.&nbsp; This property is <span style="font-weight:bold">not</span> available in the day template.</p>
+</li><li><p>permaLinkName.&nbsp; This is the hyperlink anchor name that should be used within the day template to provide a permaLink location.&nbsp; This property is <span style="font-weight:bold">only</span> available in the day template.</p>
+</li><li><p>absolutePermaLink.&nbsp; This is the absolute link to the post within a day page.&nbsp; It is only present if the hostname and weblog-day-template configuration properties are set.&nbsp; This property is <span style="font-weight:bold">not</span> available when expanding the day template.</p>
+</li><li><p>date.&nbsp; A Date Object for date/time the weblog post was created.&nbsp; Default to "%I[NP]:%M %p" (i.e. the time in 12 hour format).</p>
+</li><li><p>id.&nbsp; This is only available if the weblog-tag-prefix configuration property is set. Used to uniquely identify this post.</p>
+</li></ol>
+<h2><a name="SyndicationOptions"></a>Options affecting syndication</h2>
+<h3>RSS 0.91 Configuration</h3>
+<p>The following configuration options are used by the RSS template (see examples/full-weblog).&nbsp; Those options listed as Required are needed to build a valid feed.</p>
+<h4>Content Options</h4>
+<table><thead><tr><th><p style="text-align:center;font-weight:bold;font-style:italic">Option</p>
+</th><th><p style="text-align:center;font-weight:bold;font-style:italic">Value</p>
+</th></tr></thead><tbody><tr><td><p>hostname</p>
+</td><td><p><span style="font-weight:bold">Required.&nbsp; </span>The hostname of the server where this feed is hosted.&nbsp; This is required so that absolute links can be created to individual posts.</p>
+</td></tr><tr><td><p>header weblog-image-url</p>
+</td><td><p style="font-weight:bold">Required.<span style="font-weight:normal">&nbsp; The URL of an image for this weblog. </span></p>
+</td></tr><tr><td><p>header weblog-description</p>
+</td><td><p style="font-weight:bold">Required.&nbsp; <span style="font-weight:normal">A brief description of the weblog.</span></p>
+</td></tr><tr><td><p>weblog-day-template</p>
+</td><td><p style="font-weight:bold">Required.<span style="font-weight:normal">&nbsp; This is required to build valid links to the articles in the feed.</span></p>
+</td></tr><tr><td><p>header author</p>
+</td><td><p style="font-weight:bold">Optional.<span style="font-weight:normal">&nbsp; Used to form the copyright notice.</span></p>
+</td></tr><tr><td><p>header language</p>
+</td><td><p style="font-weight:bold">Optional.<span style="font-weight:normal">&nbsp; The ISO language code, defaults to 'en'.</span></p>
+</td></tr></tbody></table>
+<h4>Template Options</h4>
+<p>For the RSS template to produce valid output the following options need to be specified in a template directive:</p>
+<table><thead><tr><th><p style="text-align:center;font-weight:bold;font-style:italic">Option</p>
+</th><th><p style="text-align:center;font-weight:bold;font-style:italic">Value</p>
+</th></tr></thead><tbody><tr><td><p>output-type PlainText</p>
+</td><td><p><span style="font-weight:bold">Required.&nbsp; </span>This ensures that articles are stripped of HTML before being placed in the RSS feed.</p>
+</td></tr><tr><td><p>character-set utf-8</p>
+</td><td><p style="font-weight:bold">Optional.<span style="font-weight:normal">&nbsp; Some RSS readers do not support the default character set of ISO-8859-1, recommended to be set to UTF-8.</span></p>
+</td></tr><tr><td><p>plaintext-maxsize 197</p>
+</td><td><p style="font-weight:bold">Required.<span style="font-weight:normal">&nbsp; RSS specifies a maximum size for article content.</span></p>
+</td></tr></tbody></table>
+<h3>Atom 1.0 Configuration</h3>
+<p>The following configuration options are used by the Atom template (see examples/full-weblog).&nbsp; Those options listed as Required are needed to build a valid feed.</p>
+<h4>Content Options</h4>
+<table><thead><tr><th><p style="text-align:center;font-weight:bold;font-style:italic">Option</p>
+</th><th><p style="text-align:center;font-weight:bold;font-style:italic">Value</p>
+</th></tr></thead><tbody><tr><td><p>hostname</p>
+</td><td><p><span style="font-weight:bold">Required.&nbsp; </span>The hostname of the server where this feed is hosted.&nbsp; This is required so that absolute links can be created to individual posts.</p>
+</td></tr><tr><td><p>weblog-day-template</p>
+</td><td><p style="font-weight:bold">Required.<span style="font-weight:normal">&nbsp; This is required to build valid links to the articles in the feed.</span></p>
+</td></tr><tr><td><p>weblog-tag-prefix</p>
+</td><td><p style="font-weight:bold">Required.<span style="font-weight:normal">&nbsp; Atom requires a unique, never changing ID for each post.&nbsp; PubTal forms this by creating a 'tag:' URI using the prefix and the date/time of the post.</span></p>
+<p>The prefix should be unique for each weblog and should not change, even if the name or location of the weblog changes.&nbsp; </p>
+<p>Suggested value: <code>domainname,year:weblogName</code></p>
+<p>Once the value is defined for a weblog it should never be changed.</p>
+</td></tr><tr><td><p>header author</p>
+</td><td><p style="font-weight:bold">Optional.<span style="font-weight:normal">&nbsp; Used to form the author element, Anonymous otherwise.</span></p>
+</td></tr><tr><td><p>header language</p>
+</td><td><p style="font-weight:bold">Optional.<span style="font-weight:normal">&nbsp; The ISO language code, defaults to 'en'.</span></p>
+</td></tr></tbody></table>
+<h4>Template Options</h4>
+<p>For the Atom template to produce valid output the following options need to be specified in a template directive:</p>
+<table><thead><tr><th><p style="text-align:center;font-weight:bold;font-style:italic">Option</p>
+</th><th><p style="text-align:center;font-weight:bold;font-style:italic">Value</p>
+</th></tr></thead><tbody><tr><td><p>output-type PlainText</p>
+</td><td><p><span style="font-weight:bold">Required.&nbsp; </span>This ensures that articles are stripped of HTML before being placed in the feed.</p>
+<p>To place HTML into the Atom feed the template needs to be edited first.</p>
+</td></tr><tr><td><p>character-set utf-8</p>
+</td><td><p style="font-weight:bold">Optional.<span style="font-weight:normal">&nbsp; Some RSS readers do not support the default character set of ISO-8859-1, recommended to be set to UTF-8.</span></p>
+</td></tr><tr><td><p>plaintext-maxsize 197</p>
+</td><td><p style="font-weight:bold">Required.<span style="font-weight:normal">&nbsp; The Atom template is designed to contain a summary of the post, rather than a full post.&nbsp; </span></p>
+</td></tr></tbody></table>
+<h2><a name="ArchivePerformance"></a>Monthly Archive Performance Notes</h2>
+<p>If the day and monthly templates use the Monthly Archive Object then their output pages must be rebuilt for the first post of every month.&nbsp; PubTal will do this automatically if the content configuration parameter weblog-month-template is defined.</p>
+<p>If the day or monthly templates do not use the Monthly Archive Objects then the time consuming monthly-rebuild can be suppressed.&nbsp; To do this set the following <span style="font-weight:bold">template</span> configuration parameter:</p>
+<table><thead><tr><th><p style="text-align:center;font-weight:bold;font-style:italic">Option</p>
+</th><th><p style="text-align:center;font-weight:bold;font-style:italic">Value</p>
+</th></tr></thead><tbody><tr><td><p>weblog-suppress-monthly-rebuild</p>
+</td><td><p>If this is set to False (the default), and the weblog-month-template is defined, then all pages generated by this template (day or month) will be rebuilt for the first post of a month.</p>
+<p>If the day template does not use the Monthly Archive object then set this to True to avoid rebuilding all pages at the start of each month.</p>
+</td></tr></tbody></table>
+<p></p>
+<p></p>
+</div>
+	  
+	
+  <div class="navbar">
+  <a href="../index.html" title="Contents">Contents</a>
+  </div>
+  <p id="version">PubTal Version 3.2.0</p>
+  <div id="footer">
+  <p>File: content/weblog.sxw</p>
+  <p>Last modified: Mon, 02 Jan 2006 16:06:49 GMT</p>
+  <p>Copyright 2006 Colin Stewart</p>
+  <p title="PubTal is a template driven web site publisher.">Made with <a href="http://www.owlfish.com/software/PubTal/">PubTal</a> 3.2.0</p>
+  </div>
+</body>

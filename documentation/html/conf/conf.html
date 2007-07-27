@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Configuration of PubTal</title>
+	<link href="../../style/site.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<h1>Configuration of PubTal</h1>
+  <p id="subject">Documentation of PubTal configuration options.</p>
+  <div><p>All configuration is held in a single file, with all directory and file references relative to the directory containing the configuration file.&nbsp; For example, if you have a configuration file <i>new-site/site.config</i> such as:</p>
+<pre><code>&lt;SiteConfig&gt;
+content-dir src
+&lt;/SiteConfig&gt;
+</code></pre>
+<p>then the content will reside in the directory <i>new-site/src/</i>.</p>
+<p>Three different configuration directives are supported:</p>
+<ul>
+	<li>Content - Configuration options set under this directive apply to the content of the website.</li>
+	<li>Template - Configuration options set under this directive apply to the templates used in the website.</li>
+	<li>SiteConfig - Global configuration options are set under this directive.
+	<ul><li>Upload - Several of these directives can be present under the SiteConfig directive.</li></ul>
+</li>
+</ul>
+<h2>&lt;SiteConfig&gt;</h2>
+<p>If used, this directive <b>must</b> be the first directive in the configuration file.&nbsp; It controls site-wide configuration.</p>
+<div class="configOptions">
+<h3>content-dir <i>dir</i></h3>
+
+Sets the location of the content directory to <i>dir</i>.&nbsp; Defaults to "content".
+
+<h3>dest-dir <i>dir</i></h3>
+
+Sets the location of the destination directory to <i>dir</i>.&nbsp; Defaults to "dest".
+
+<h3>template-dir <i>dir</i></h3>
+
+Sets the location of the template and macro directory to <i>dir</i>.&nbsp; Defaults to "template".
+
+<h3>ignore-filter <i>regex</i></h3>
+
+Adds a regular expression to the filter list of files to ignore when looking for content to publish and upload.&nbsp; For example, to ignore CVS and backup files (.txt~), add the lines:
+<pre><code>ignore-filter .*?CVS.*
+ignore-filter .*~$
+</code></pre>
+
+
+<h3>character-set <i>encoding</i></h3>
+
+Sets the default character set that will be used for all templates and content across the site (can be overridden by the Content and Template directives).&nbsp; Defaults to ISO-8859-15.
+
+<h3>additional-plugins-dir <i>dir</i></h3>
+
+Adds an additional directory to be searched for PubTal plugins.
+
+<h3>pubtal-data-dir <i>dir</i></h3>
+
+Sets the name of the directory that PubTal uses to store site information.&nbsp; This directory is used internally by PubTal to store the state of the site, and so determines which (if any) files need to be uploaded.&nbsp; Defaults to PubTalData.
+</div>
+<h2>&lt;Upload&gt;</h2>
+<p>Several Upload directives can be nested inside the &lt;SiteConfig&gt; directive.&nbsp; They specify an upload destination which PubTal can upload content to.&nbsp; An example of two different upload destinations is:</p>
+<pre><code>&lt;SiteConfig&gt;
+&nbsp; &lt;Upload&gt;
+&nbsp; host localhost
+&nbsp; username user
+&nbsp; &lt;/Upload&gt;
+&nbsp; &lt;Upload&gt;
+&nbsp; host remotehost
+&nbsp; username remoteuser
+&nbsp; &lt;/Upload&gt;
+&lt;/SiteConfig&gt;</code></pre>
+<p>The following Upload options are available:</p>
+<div class="configOptions">
+<h3>method <i>methodname</i></h3>
+
+The upload method to use, defaults to FTP.
+
+<h3>host <i>hostname</i></h3>
+
+Specifies the hostname of the upload location.
+
+<h3>username <i>username</i></h3>
+
+The username to use when logging into the FTP site.
+
+<h3>password <i>password</i></h3>
+
+The password for the FTP site.&nbsp; This is optional; the uploadSite.py command will prompt for the password if it is not specified in the configuration file.
+
+<h3>base-dir <i>dir</i></h3>
+
+The directory that the website should be placed into on the FTP site (e.g. public_html).&nbsp; Defaults to empty.
+</div>
+<h2>&lt;Content <i>[directory][file][*.file-extension]</i>&gt;</h2>
+<p>The Content directive controls default name-value pairs, the template to use when expanding content, and many other options.&nbsp; See the later discussion on <a href="#directive-parameters">directive parameters</a> for details of how multiple Content directives interact.</p>
+<div class="configOptions">
+<h3>content-type <i>type</i></h3>
+
+Specifies that the content should be treated as being of this type.&nbsp; Here is the list of content types supported by default, although additional content types can be added using plugins:
+<ul>
+	<li>HTMLText</li>
+	<li>OpenOffice</li>
+	<li>Catalogue</li>
+	<li>Raw</li>
+	<li>Binary</li>
+	<li>Weblog</li>
+</ul>
+
+
+<h3>class <i>classname</i></h3>
+
+Specifies that this content belongs to a Class called <i>classname</i>.&nbsp; All content is by default in the "normal" class, and by default the updateSite.py command will build only content that is part of the "normal" class.&nbsp; By using the --class option however, a user can specify a list of classes that should be built instead.&nbsp; Additionally the --all option can be used to build all content regardless of the class that it belongs to.
+
+<h3>template <i>templateFile</i></h3>
+
+Set the template (relative to the template directory) that should be used for this content.&nbsp; Defaults to template.html.
+
+<h3>macro <i>name</i> <i>templateFile</i></h3>
+
+Adds <i>templateFile</i> to the list of macros that will be available.&nbsp; All macros defined in the templateFile will be available to the template used when building the pages for this content.&nbsp; Macros are available under the TAL path macros/<i>name</i>/macro-name.&nbsp; 
+
+<h3>header <i>name</i> <i>value</i></h3>
+
+Adds a default <i>value</i> to the header <i>name</i>.&nbsp; Can be overridden by the name-value pairs set in the content.
+
+<h3>character-set <i>charset</i></h3>
+
+Sets the character set that this content is stored in.
+
+<h3>preserve-html-spaces <i>true | false</i></h3>
+
+Set to false to disable the output of &amp;nbsp; codes, which are used to preserve multiple spaces in content.&nbsp; Defaults to true.
+
+<h3>url-prefix <i>http://domain-name</i></h3>
+
+When set this will make the "absoluteDestinationURL" property available within the template.
+
+<h3>htmltext-ignorenewlines <i>true | false</i></h3>
+
+Only applies to HTMLText.&nbsp; Set to true to disable the output of &lt;br&gt; tags for newlines in HTMLText content.&nbsp; Defaults to false.
+
+<h3>catalogue-index-template <i>templateFile</i></h3>
+
+Set the template (relative to the template directory) that should be used for Catalogue master index pages beneath this directory.&nbsp; Defaults to template.html.
+
+<h3>catalogue-item-template <i>templateFile</i></h3>
+
+Set the template (relative to the template directory) that should be used for Catalogue item pages beneath this directory.&nbsp; Defaults to template.html.
+
+<h3>catalogue-max-columns <i>number</i></h3>
+
+Set the maximum number of items to put in a row before starting a new row when populating the catalogue/rows property.&nbsp; Defaults to 5.
+
+<h3>catalogue-build-pages <i>[item],[index]</i></h3>
+
+Control whether item, master index pages, or both should be built for Catalogue content.&nbsp; Defaults to item,index.
+
+<h3>catalogue-item-content-type <i>type</i></h3>
+
+Specifies the content type of the items listed in the affected catalogue(s), or disables treating the entries as content if set to "None" (the default).&nbsp; If a catalogue has catalogue-item-content-type set to anything other than None, it will build individual entry pages using the "page" property which comes from treating the file specified by "filename" as being a piece of content of type <i>type</i>.
+</div>
+<h2>&lt;Template <i>[directory][file][*.file-extension]</i>&gt;</h2>
+<p>The Template directive controls the output type (HTML or XHTML), the character set of the template, and other options.&nbsp; See the later discussion on <a href="#directive-parameters">directive parameters</a> for details of how multiple Template directives interact.</p>
+<div class="configOptions">
+<h3>output-type <i>type</i></h3>
+
+Specifies that the template is expecting content to be of a particular <i>type</i>.&nbsp; Recognised types are:
+<ul>
+	<li>HTML</li>
+	<li>XHTML</li>
+</ul>
+
+
+Defaults to HTML.
+
+<h3>character-set <i>charset</i></h3>
+
+The template is encoded in the given character set.
+
+<h3>suppress-xmldecl <i>true | false</i></h3>
+
+Only applies to XHTML templates.&nbsp; When set to true, the XML Declaration will be suppressed in the resulting file, useful for IE 6.&nbsp; Defaults to false.
+
+<h3>xml-doctype <i>doctype</i></h3>
+
+Only applies to XHTML templates.&nbsp; If pyXML is installed then PubTal will use this to determine the DOCTYPE for the XHTML page.&nbsp; If pyXML is not installed then this option should be used to set the DOCTYPE.&nbsp; No default.
+</div>
+<h2><a name="directive-parameters">Directive Parameters</a></h2>
+<p>Both the Content and Template directives take optional parameters.&nbsp; These parameters are (listed lowest priority first):</p>
+<ol>
+	<li>A file pattern, e.g. *.txt</li>
+	<li>A directory, e.g. test/</li>
+	<li>A particular file, e.g. test/example.txt</li>
+</ol>
+<p>If no parameters are specified then the directive applies to the root directory (i.e. the content-dir or the template-dir depending on the directive type).</p>
+<p>If multiple directives apply to the same content or template then they are all used.&nbsp; If the same option is set multiple times then the parameter with the higher priority takes precedence.&nbsp; Take for example the configuration snippet:</p>
+<pre><code>&lt;Content&gt;
+header author Author One
+&lt;/Content&gt;
+
+&lt;Content test/&gt;
+header author Author Two
+&lt;/Content&gt;
+
+&lt;Content test/example.txt&gt;
+header author Author Three
+&lt;/Content&gt;
+</code></pre>
+<p>The content file <i>test/example.txt</i> will have the name-value pair "author" set to "Author Three".&nbsp; Any other content in the <i>test/</i> directory will have the name-value pair set to "Author Two", and all other content in the site will have the name-value pair set to "Author One".</p>
+<p>When parameters are set on a directory they are inherited by all the sub-directories as well.&nbsp; For example content in <i>test/subdir/</i> will also have the name-value pair "author" set to "Author Two".</p>
+<p>If an option is set on a directory, and also set on one of its sub-directories, then content in the sub-directory uses the configuration setting of the deeper option.</p>
+<p>File patterns can be targetted at a specfic directory.&nbsp; Take for example a configuration of:</p>
+<pre><code>&lt;Content test/*.txt&gt;
+header subject Text File
+&lt;/Content&gt;
+</code></pre>
+<p>This will apply the name-value header "subject" to all files ending in .txt within the <i>test/</i> directory, and all sub-directories (e.g. <i>test/subdir/one.txt</i>).</p>
+</div>
+	  
+	
+  <div class="navbar">
+  <a href="../index.html" title="Contents">Contents</a>
+  </div>
+  <p id="version">PubTal Version 3.2.0</p>
+  <div id="footer">
+  <p>File: conf/conf.txt</p>
+  <p>Last modified: Mon, 02 Jan 2006 16:15:47 GMT</p>
+  <p>Copyright 2006 Colin Stewart</p>
+  <p title="PubTal is a template driven web site publisher.">Made with <a href="http://www.owlfish.com/software/PubTal/">PubTal</a> 3.2.0</p>
+  </div>
+</body>

@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+  <title>First test abi-page</title>
+  <link href="style/site.css" rel="stylesheet" type="text/css">  
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta content="Colin Stewart" name="author">   
+  
+</head>
+<body>
+	<h1>First test abi-page</h1>
+	<h2>Testing abiword</h2>
+	<div><h1 style="text-align: center">First Heading</h1>
+<h2>Second Heading</h2>
+<h3>Third Heading</h3>
+<p>(Quick <a href="#theEnd">skip</a> to the end!)</p>
+<p>The aim of this test is to show that PubTal can now import and correctly handle AbiWord documents.  It <span style="text-decoration: underline">supports</span> the <span style="font-style: italic">following</span> features:</p>
+<ul style="margin-left: 18.0pt"><li>	<span style="font-weight: bold">Bold</span></li><li>	<span style="font-style: italic">Italic</span></li><li>	<span style="text-decoration: underline">Underline</span><ul style="margin-left: 36.0pt"><li>	Indented bullet points</li><li>	<a href="http://www.owlfish.com/">Hyper links</a></li></ul></li><li>	Footnotes<a href="#footnote-id-0">1</a>
+.</li></ul><h2>Other features</h2>
+<p>We can do <span style="text-decoration: overline">code</span> <span style="text-decoration: line-through">snippets</span>:</p>
+<pre><code>&lt;html&gt;
+&lt;body&gt;
+  &lt;div metal:define-macro="navbar"&gt;
+  	&lt;a tal:attributes="href string:${page/depth}index.html"&gt;Home&lt;/a&gt;
+  	&lt;a tal:attributes="href string:${page/depth}first.html"&gt;First Page&lt;/a&gt;
+  	&lt;a tal:attributes="href string:${page/depth}second/index.html"&gt;Second Page&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;h1 tal:content="page/headers/title"&gt;Title&lt;/h1&gt;
+  &lt;div tal:content="structure page/content"&gt;Body&lt;/div&gt;
+  &lt;p metal:define-macro="email"&gt;A &lt;b&gt;fancy&lt;/b&gt; email address: me@mydomain.com&lt;/p&gt; 
+  &lt;p&gt;Last modified: &lt;b tal:replace="page/lastModifiedDate"&gt;Date&lt;/b&gt;&lt;/p&gt;
+&lt;/body&gt;</code></pre><p>And then ordinary text.</p>
+<p></p>
+<p></p>
+<table><tr><td><p>Title One</p>
+
+</td><td><p>Title Two</p>
+
+</td></tr><tr><td><p>Text<a href="#footnote-id-1">2</a>
+</p>
+
+</td><td><p>Text More</p>
+
+</td></tr><tr><td colspan="2"><p>Some larger text</p>
+
+</td></tr></table><p></p>
+<p>Do some more words down here.</p>
+<p>	</p>
+<ol style="margin-left: 18.0pt"><li>	This is a list<ol style="margin-left: 36.0pt"><li>	Including this bit</li></ol></li></ol><p></p>
+<p>Now for an indent:</p>
+<p style="margin-left: 36pt">This is important - we have indents.</p>
+<p style="margin-left: 36pt">Like this.</p>
+<p>And so on.</p>
+<p style="text-align: center">Central to the argument.</p>
+<p style="text-align: right">To the right of things.</p>
+<p style="text-align: left">And back to normal.</p>
+<p style="text-align: left"></p>
+<p style="text-align: left">It's the 15<span style="font-size: small; vertical-align: super">th</span> of October - which make me drink H<span style="font-size: small; vertical-align: sub">2</span>O.</p>
+<p style="text-align: left"></p>
+<p style="text-align: left"><a name="theEnd">The End (of at least part of the end.)</a></p>
+<p style="text-align: left"></p>
+<ol style="text-align: left;margin-left: 18.0pt"><li>	Now do it by numbers.</li><li>	This and that.<ol style="text-align: left;margin-left: 36.0pt"><li>	The other</li></ol></li></ol><p style="text-align: left"></p>
+<p style="text-align: left">An endnote<a href="#endnote-id-0">3</a>
+.</p>
+<p style="text-align: left"></p>
+<p style="text-align: left"></p>
+</div>
+	<div style="font-size: small">
+		<p><a name="footnote-id-0" style="vertical-align: super; font-size: small">1</a> With content elsewhere!</p>
+<p><a name="footnote-id-1" style="vertical-align: super; font-size: small">2</a> Another foot note</p>
+<p><a name="endnote-id-0" style="vertical-align: super; font-size: small">3</a> This is truly the <span style="font-weight: bold; font-style: italic">end</span>!</p>
+
+	</div>
+	<div id="footer">
+		<p title="PubTal is a template driven web site publisher.">Made with <a href="http://www.owlfish.com/software/PubTal/">PubTal</a> 2.0</p>
+	</div>
+</body>
+</html>

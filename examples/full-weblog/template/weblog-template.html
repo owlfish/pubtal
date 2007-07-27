@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title tal:content="page/weblog-name"></title>
+	</head>
+	<body>
+		<!-- For monthly archives the page/yearName will be defined. -->
+		<h1 tal:condition="page/yearName" tal:content="string: Archive for ${page/monthNameLong} ${page/yearName}">Monthly Archive Title</h1>
+		
+		<!-- Loop over all days in the index. -->
+		<div tal:repeat="day page/days">
+			<h2 tal:content="day/date">Date of the day goes here</h2>
+			<!-- Loop over all posts in the day.  -->
+			<div tal:repeat="post day/posts">
+				<h3>
+					<!-- permaLinkName is only available when this template is used for the "day" pages. -->
+					<a tal:omit-tag="not:exists:post/permaLinkName" tal:attributes="name post/permaLinkName">
+						<b tal:replace="post/headers/date">Time of post</b>
+					</a>
+					<!-- The permaLink property is available when this template is NOT used for the day page -->
+					<a tal:condition="post/permaLink" tal:attributes="href post/permaLink">PermaLink</a>
+					<b tal:condition="post/headers/title" tal:omit-tag> - </b><b tal:replace="post/headers/title">Post Title</b>
+				</h3>
+				<div>
+					<p tal:replace="structure post/content">Content of post goes here</p>
+				</div>
+			</div> 
+		</div> 
+		<h2>Archives</h2>
+		<ul>
+			<li tal:repeat="yearArchive page/monthlyArchive"><b tal:content="yearArchive/yearName"></b>
+				<ul>
+					<li tal:repeat="month yearArchive/monthList">
+						<a tal:attributes="href month/archiveLink" tal:content="month/monthNameLong"></a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<a tal:attributes="href string:${page/depth}/weblog/index.html">Weblog Index</a>
+	</body>
+</html>

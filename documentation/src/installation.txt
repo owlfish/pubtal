@@ -1,0 +1,96 @@
+title: Installation Guide
+subject: Installing PubTal
+
+Instructions for the following platforms are available:
+<ul>
+	<li><a href="#linux">Linux/Unix</a> - Covers Linux and most other Unix based systems.</li>
+	<li><a href="#macosx">MacOS X</a></li>
+	<li><a href="#windows">Windows</a></li>
+</ul>
+
+<h2><a name="linux">Linux/Unix Installation Instructions</a></h2>
+<h3>Step 1: Install Python</h3>
+Most Linux distributions install Python by default.  If it isn't present on your system then download it from your vendor's website or <a href="http://www.python.org/">Python.org</a>.
+
+<h3>Step 2: Install SimpleTAL</h3>
+Download the latest version of <a href="http://www.owlfish.com/software/simpleTAL/">SimpleTAL</a> and install by following these steps:
+<ol>
+	<li>Unzip the SimpleTAL archive (e.g. <code>gunzip SimpleTAL-3.11.tar.gz</code>)</li>
+	<li>Un-tar the archive (e.g. <code>tar -xf SimpleTAL-3.11.tar</code>)</li>
+	<li>Become the root user using <code>su -</code></li>
+	<li>Use <code>python setup.py install</code> to install SimpleTAL</li>
+</ol>
+
+<h3>Step 3: Install PubTal</h3>
+To install PubTal follow these steps:
+<ol>
+	<li>Unzip the PubTal archive (e.g. <code>gunzip PubTal-3.1.2.tar.gz</code>)</li>
+	<li>Un-tar the archive (e.g. <code>tar -xf PubTal-3.1.2.tar</code>)</li>
+	<li>Become the root user using <code>su -</code></li>
+	<li>Use <code>python setup.py install</code> to install PubTal</li>
+</ol>
+
+<h4>Step 4: Verify installation</h4>
+To ensure that PubTal has installed correctly:
+<ol>
+	<li>Go the <code>examples/homepage</code> directory</li>
+	<li>Run <code>updateSite.py site.config</code> - the website should be built.</li>
+</ol>
+
+<h2><a name="macosx">MacOS X Installation Instructions</a></h2>
+MacOS X already comes with Python installed, so only SimpleTAL and PubTal need to be added.
+
+<h3>Step 1: Install SimpleTAL</h3>
+Download the latest version of <a href="http://www.owlfish.com/software/simpleTAL/">SimpleTAL</a> and install by following these steps:
+<ol>
+	<li>Ensure that /usr/local/bin is in your path.  If you are using the default tcsh then add the following line to your .cshrc file:<code>set path=( $path /usr/local/bin )</code></li>
+	<li>Unzip the SimpleTAL archive (e.g. <code>gunzip SimpleTAL-3.11.tar.gz</code>)</li>
+	<li>Un-tar the archive (e.g. <code>tar -xf SimpleTAL-3.11.tar</code>)</li>
+	<li>Run <code>sudo python setup.py install --install-scripts /usr/local/bin</code></li>
+	<li>Close the terminal program and re-open it.</li>
+</ol>
+
+<h3>Step 2: Install PubTal</h3>
+To install PubTal follow these steps:
+<ol>
+	<li>Unzip the PubTal archive (e.g. <code>gunzip PubTal-3.1.2.tar.gz</code>)</li>
+	<li>Un-tar the archive (e.g. <code>tar -xf PubTal-3.1.2.tar</code>)</li>
+	<li>Run <code>sudo python setup.py install --install-scripts /usr/local/bin</code></li>
+	<li>Close the terminal program and re-open it.</li>
+</ol>
+
+<h4>Step 4: Verify installation</h4>
+To ensure that PubTal has installed correctly:
+<ol>
+	<li>Go the <code>examples/homepage</code> directory</li>
+	<li>Run <code>updateSite.py site.config</code> - the website should be built.</li>
+</ol>
+
+<h2><a name="windows">Windows Installation Instructions</a></h2>
+<h3>Step 1: Install Python</h3>
+Windows does not come with Python pre-installed.  Download the latest stable version from <a href="http://www.python.org/">Python.org</a> and follow the instructions there.
+
+<h3>Step 2: Install SimpleTAL</h3>
+Download the latest version of <a href="http://www.owlfish.com/software/simpleTAL/">SimpleTAL</a> and install by following these steps:
+<ol>
+	<li>Unzip the SimpleTAL archive (WinZip supports .tar.gz files)</li>
+	<li>Select Start->Run and enter "cmd" in the text box and select "OK"</li>
+	<li>Change to the SimpleTAL directory (e.g. <code>cd C:\SimpleTAL-3.11</code>)</li>
+	<li>Type <code>C:\Python23\python.exe setup.py install</code> (changing C:\Python23 for the directory where you installed Python)</li>
+</ol>
+
+<h3>Step 3: Install PubTal</h3>
+To install PubTal follow these steps:
+<ol>
+	<li>Unzip the PubTal archive (WinZip supports .tar.gz files)</li>
+	<li>Select Start->Run and enter "cmd" in the text box and select "OK"</li>
+	<li>Change to the PubTal directory (e.g. <code>cd C:\PubTal-3.1.2</code>)</li>
+	<li>Type <code>C:\Python23\python.exe setup.py install</code> (changing C:\Python23 for the directory where you installed Python)</li>
+</ol>
+
+<h4>Step 4: Verify installation</h4>
+To ensure that PubTal has installed correctly:
+<ol>
+	<li>Go the examples/homepage directory</li>
+	<li>Run the updateSite.py command (e.g. <code>C:\Python23\Scripts\updateSite.py site.config</code>) - the website should be built.</li>
+</ol>

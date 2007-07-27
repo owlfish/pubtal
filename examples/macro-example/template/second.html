@@ -1,0 +1,7 @@
+<html>
+<body>
+  <h1 tal:content="page/headers/title">Title</h1>
+  <div tal:content="structure page/content">Body</div>
+  <p metal:use-macro="macros/site-macros/email">Email goes here.</p>
+  <p metal:use-macro="macros/site-macros/navbar">Nav bar here.</p>
+</body>

@@ -1,0 +1,57 @@
+title: Commands Reference
+subject: PubTal Commands Reference.
+
+PubTal supplies two commands: updateSite.py and uploadSite.py.  These are used to rebuild a website and upload a website respectively.
+
+<h2>updateSite.py</h2>
+This takes a minimum of one parameter, the location of the website configuration file.
+
+<pre>updateSite.py [options] site.config [content-dir | content-file] [...]</pre>
+
+The updateSite.py command first reads in the configuration file and so locates the content, template, and destination directories (defaulting to content, template, and dest respectively).  If only one parameter is passed to updateSite.py, it will then find each file under the content directory and build the corresponding output files.
+
+If more than one parameter is passed, then each extra parameter is taken as content to build.  If the parameter is a directory under the content directory, then any content files in that directory will be built recursively.  If the parameter is a file in the content directory (or one of its children), then just that file will be built.
+
+Take for example:
+<pre>updateSite.py new-site/site.config new-site/content/index.txt new-site/content/examples/</pre>
+
+This will build the index.txt file into index.html and all content files under content/examples/ will be built into their corresponding output files.
+
+<h3>options</h3>
+The following options are supported:
+<ul>
+	<li>-h | --help - Prints out the help description for the command.</li>
+	<li>-a | --all - Builds all classes of content, not just content in the "normal" class.</li>
+	<li>--class classParams - Builds all classes given as supplied in a comma separated list.</li>
+	<li>--logging - Turns on logging.</li>
+	<li>--logfile name - Logs to the file "name" (defaults to updateSite.log).</li>
+	<li>--debug - Turns on debug logging; implies --logging.</li>
+	<li>--debug-simpletal - Turns on debug logging of SimpleTAL, implies --logging.</li>
+</ul>
+
+<h2>uploadSite.py</h2>
+
+This takes a minimum of one parameter, the location of the website configuration file.
+
+<pre>uploadSite.py [options] site.config [destination-dir | destination-file] [...]</pre>
+
+The uploadSite.py command first reads in the configuration file and so locates the destination directories.  If only one parameter is passed to uploadSite.py, it will then find each file under the destination directory that needs to be uploaded.  The logic used to determine whether a file needs to be uploaded is explained in the <a href="uploading.html">Uploading section</a>.
+
+If more than one parameter is passed, then each extra parameter is taken as destination to upload.  If the parameter is a directory under the destination directory then any files in that directory will be considered for upload recursively.  If the parameter is a file in the destination directory (or one of its children), then just that file will be considered for upload.
+
+Take for example:
+<pre>uploadSite.py new-site/site.config new-site/dest/index.html new-site/dest/examples/</pre>
+
+This will examine the index.html file and all files under dest/examples/ when determining what files to upload.
+
+<h3>options</h3>
+The following options are supported:
+<ul>
+	<li>-h | --help - Prints out the help description for the command.</li>
+	<li>-a | --all - Checks all files are uploaded, not just PubTal generated ones.</li>
+	<li>--force - Uploads files even if PubTal thinks they are up-to-date.</li>
+	<li>--dry-run - Prints out what would have been done, but takes no action.</li>
+	<li>--logging - Turns on logging.</li>
+	<li>--logfile name - Logs to the file "name" (defaults to updateSite.log).</li>
+	<li>--debug - Turns on debug logging; implies --logging.</li>
+</ul>

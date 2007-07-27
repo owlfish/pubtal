@@ -1,0 +1,88 @@
+title: Problem page.
+
+This is a <b>problem.</b>
+More text here.
+
+This is also a <b>problem.</b>
+<i>Starting with a tag.</i>
+
+The final problem is <b>about to happen.</b>
+<pre><code>The final tag issue.</code></pre>
+
+<h2>Do we really want a br?</h2>
+I would say not for this case.
+
+<h3>What about here?</h3>
+
+<b>Harder</b> case.  Answer: No - paragraph!
+
+<h3>Easy</h3>
+<ul>
+	<li>One</li>
+</ul>
+
+<h3>Also easy</h3>
+Some text.
+<ul>
+	<li>One</li>
+</ul>
+
+<b>Easiest case?</b>
+<i>Perhaps.</i>
+
+<b></b>
+<i>Empty tags shouldn't count!</i>
+---
+
+Desired output:
+
+<p>This is a <b>problem.</b><br>
+More text here.</p>
+<p>This is also a <b>problem.</b><br>
+<i>Starting with a tag.</i></p>
+<p>The final problem is <b>about to happen.</b><br></p>
+<pre><code>The final tag issue.</code></pre>
+<h2>Do we really want a br?</h2>
+<p>I would say not for this case.</p>
+<h3>What about here?</h3>
+<p><b>Harder</b> case.  Answer: No - paragraph!</p>
+<h3>Easy</h3>
+<ul>
+	<li>One</li>
+</ul>
+<h3>Also easy</h3>
+<p>Some text.</p>
+<ul>
+	<li>One</li>
+</ul>
+<p><b>Easiest case?</b><br>
+<i>Perhaps.</i></p>
+<p><b></b>
+<i>Empty tags shouldn't count!</i></p>
+---
+
+Logic: If the current paragraph has content (other than <p> tag) then the *first* newline, even if empty, should have a newline printed out.
+
+Three situations when closing a paragraph:
+	Closing because of a new paragraph opening.
+	Closing because of a new block level element opening (could be a paragraph).
+	
+e.g.:
+	Paragarph 1: Hello
+	
+	Paragraph 2: There.
+	
+	Parargraph 1: New block
+	<h1>Header</h1>
+	
+Result: We *never* want a newline <br> at the close of a paragraph.
+
+We call closeParagraph:
+	When we have split text into two paragraphs in handleAccumulatedData()
+	When we are starting a new block level element (in startElement())
+	When we have finished processing everything.
+	
+Suggestion:
+	If we are about to close a paragraph then *don't* *ever* write out a newline.
+	Issue: We write out newlines when we see a NL char, *before* we know that this is the last paragraph.
+	

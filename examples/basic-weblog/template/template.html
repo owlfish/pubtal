@@ -1,0 +1,22 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<title tal:content="page/weblog-name"></title>
+	</head>
+	<body>
+		<!-- Loop over all days in the index. -->
+		<div tal:repeat="day page/days">
+			<h2 tal:content="day/date">Date of the day goes here</h2>
+			<!-- Loop over all posts in the day.  -->
+			<div tal:repeat="post day/posts">
+				<h3>
+					<b tal:replace="post/headers/date">Time of post</b>
+					<b tal:condition="post/headers/title" tal:omit-tag> - </b><b tal:replace="post/headers/title">Post Title</b>
+				</h3>
+				<div>
+					<p tal:replace="structure post/content">Content of post goes here</p>
+				</div>
+			</div> 
+		</div> 
+	</body>
+</html>

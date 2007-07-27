@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Uploading</title>
+	<link href="../style/site.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<h1>Uploading</h1>
+  <p id="subject">Automatic uploading using PubTal.</p>
+  <div><p>PubTal can automatically upload a website to an FTP server.&nbsp; To enable this feature, one or more &lt;Upload&gt; directives must be added to the site's <a href="conf/conf.html">configuration file</a>.&nbsp; </p>
+<p>To determine what files require uploading, PubTal uses the following technique:</p>
+<ul>
+	<li>When PubTal writes a file, it records a checksum for the file (stored in the PubTalData/localCache file by default).</li>
+	<li>When PubTal uploads a file, it records the checksum of the file it uploaded (stored in a server-specific file in PubTalData/).</li>
+	<li>When asked to upload a site, PubTal compares the two checksum files.&nbsp; If there is a new file, or different checksum for an existing file in the localCache, then it will upload the file.</li>
+</ul>
+<p>Normally PubTal will not upload files that it didn't generate, however this can be overridden by passing the --all command option to uploadSite.py.&nbsp; This causes uploadSite.py to checksum all files that PubTal didn't generate, and again compare them to the upload checksum file.</p>
+<p>PubTal can be forced to upload files that it thinks haven't changed by using the --force command option.&nbsp; Similarly PubTal can mark files as being up-to-date by using the --uptodate command option.</p>
+<p>A full list of the different command options available are given in the <a href="command.html">Commands Reference</a>.</p>
+</div>
+	  
+	
+  <div class="navbar">
+  <a href="index.html" title="Contents">Contents</a>
+  </div>
+  <p id="version">PubTal Version 3.2.0</p>
+  <div id="footer">
+  <p>File: uploading.txt</p>
+  <p>Last modified: Sun, 25 Apr 2004 05:08:18 BST</p>
+  <p>Copyright 2006 Colin Stewart</p>
+  <p title="PubTal is a template driven web site publisher.">Made with <a href="http://www.owlfish.com/software/PubTal/">PubTal</a> 3.2.0</p>
+  </div>
+</body>

@@ -1,0 +1,3 @@
+title: The 2nd page in the example home page
+
+This is the second page, used to demonstrate the navigation box.

@@ -1,0 +1,12 @@
+This is an example of a file being treated as Binary.
+The contents of this file will be copied directly
+into the dest directory.
+
+This is particular useful for graphics.  For example
+use the following configuration element to copy
+png images:
+
+<Content *.png>
+content-type Binary
+</Content>
+

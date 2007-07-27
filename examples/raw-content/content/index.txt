@@ -1,0 +1,6 @@
+title: Example of Raw Content
+description: Demonstrates Raw HTML/XHTML pass through.
+
+<p>In this example the content consists of headers followed by Raw HTML/XHTML.  By using the 'Raw' content-type PubTal will parse and use the headers in the file, and treat the rest of the content as pre-formated HTML or XHTML.</p>
+
+<p>This allows arbitrary chunks of markup to be included into a site, and is useful for those who are happiest coding in HTML.</p>

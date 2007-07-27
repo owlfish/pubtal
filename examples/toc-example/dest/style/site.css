@@ -1,0 +1,14 @@
+#navigationBar {
+	text-align: center;
+	font-size: small;
+}
+
+#footer {
+	font-size: smaller;
+	margin-top: 2em;
+}
+
+#footer p {
+	padding: 0px;
+	margin: 0px;
+}

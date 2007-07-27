@@ -1,0 +1,134 @@
+Enhancements.
+----------------
+
+Define a new PubTalData directory (location specified in config file).
+In the data directory the site building process will record the following
+to a localCache DB:
+	- Path (relative to dest)
+	- md5 hex digest of the resulting file.
+
+The new uploadSite.py comand will:
+	- Read the config file and load plugins
+	- Determine the upload method
+	- Load the siteCache
+	- Open the siteStateCache DB which contains:
+		- Path (relative to dest)
+		- md5 hex digest of the file.
+	- Different modes of operation are:
+		(no params): Upload any files we know have changed.
+		--all: Upload all files in dest regardless of whether they have changed or managed by PubTal.
+		--refresh: Upload all files that PubTal has built.
+		
+	If any paths are passed to uploadSite.py then only look for files that in those paths (ALA 
+	updateSite.py).
+	
+	Logic (default and --refresh):
+		- If no localCache is found then exit with error.
+		- If no siteStateCache then INFO and build new.
+		- Loop over all entries in localCache:
+			If --refresh and path is in list (or list is empty) then add to list of files to upload.
+			If default then compare md5 with entry in siteStateCache.  If they are different (or
+			path is not in siteStateCache) then add to list of files to upload.
+	Logic (--all):
+		- Loop over all paths in DEST
+		- If path is in path list (or path list is empty) then add to list of files to upload.
+		
+	FTPPlugin logic:
+		- For each file in upload list:
+			- Attempt to upload, creating any directories as may be required.
+			- Set the md5 in siteStateCache
+			
+Logic for FTP:
+	Get list of files to upload - sort them.
+	Create an empty directory cache.
+	For each file:
+		Determine whether each directory in the path exists.  Record results in cache.
+		Upload each file.
+		
+
+More thoughts on params:
+	- Upload all files that PubTal knows have changed.
+	- Upload all files regardless of whether they have changed or not.
+	- Include unmanaged files.
+	
+	So use:
+		--force: Upload even if the files haven't changed.
+		--all: Upload all files, not just ones that PubTal has created.
+		
+Config file and internal work flow:
+
+<Site>
+content-dir content
+	<Upload>
+	method ftp
+	host localhost
+	username ausername
+	base-dir public_html
+	</Upload>
+dest-dir dest
+</Site>
+
+Plugins can declare an 'upload' capability.  They must provide a 'method' which they can then be 
+matched with the entry in the Upload directive.  The ConfigurationParser will send nested directives
+to the current top level handler - update method names to reflect this.
+
+SiteConfiguration will maintain a dictionary of upload methods to implementation classes, and a list of
+upload destination defintions.  A new class will hold the configuration options for the upload destination (used dictionaries in practise).
+
+A new module SiteUploader will have the SiteUploader class (a rename of DestFileFinder).  The SiteUploader will be the main controlling class for uploads, it will generate an UploadMethod object that in turn will be responsible for providing the uploadDB dictionary.  The UploadObserver will be provided by the end user interface (e.g. uploadSite.py):
+
+def UploadProgress (msg)
+def UploadDone ()
+def UploadError (msg)
+def UploadPrompt (msg)
+
+The BuiltInPlugins will have an FTPUpload plugin added to them which will use the FtpLibrary to perform uploads.
+
+Currently API supports batch mode only:
+	Config file is read.
+	DB is opened.
+	PagePublisher.publish is called multiple times.
+	PagePublisher.finished is called, which closes the DB.
+	
+ContentPublisher's only provide:
+	getPageContext (page, template)
+	publish (page)
+	
+New flow should support:
+	Config file is read.
+	DB is opened.
+	PagePublisher.publish is called
+	DB is flushed.
+	PagePublisher.publish is called.
+	DB is closed.
+	
+Weblog plugin flows are:
+	Rebuilding whole site:
+		- Will call publish once for each post.
+		- Needs to build each day, month, index, and rss
+	Rebuilding one post:
+		- Will call publish once for the post, and could also call once for the month, index, rss, etc.
+
+	
+			
+Implementation Notes
+------------------------
+
+SiteConfiguration now creates a localCache DB file in the PubTalData directory.  Can be configured with the Site option 'pubtal-data-dir'.
+
+The ignore filter now applies to both content and to upload files (only found files, if a file is passed explicitly then it will still be uploaded.)
+
+FtpLibrary implements an ftp client that creates files as required.
+
+Logging / User feedback proposal
+---------------------------------------
+
+Currently all information given to the user is done through the logging mechanism.  This is a problem if the library would ever be expanded for use with a GUI, and doesn't look to good under the CLI either.
+
+Proposal:
+	- Use an Observer to provide user feedback, the calling application is responsible for providing the Observer (move from SiteUploader to SiteUtils).
+	- Change default logging options to be completely silent
+	- Enable --debug and --debug-simpletal to take an optional parameter of 1,2 or 3 (WARN, INFO, DEBUG)
+	- When debug is turned on output logging to an uploadSite.py.log and updateSite.py.log file.
+	- Change all code to use the Observer to report progress, etc.
+	

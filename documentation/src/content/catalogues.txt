@@ -1,0 +1,109 @@
+title: Using Catalogues
+subject: What are catalogues and how do you use them?
+
+<h2>Introduction to Catalogues</h2>
+Catalogues allow for collections of files (e.g. photos) to be organised easily.  PubTal can, for each Catalogue, generate a master index page, and individual pages for each item in the Catalogue.
+
+A Catalogue content file is a text file consisting of name-value pairs, similar to those used in HTMLText for headers.  The first group of name-value pairs associates data with the Catalogue, and all subsequent name-value pair groups are individual entries in the Catalogue.  To illustrate this, take the example of a Catalogue of photos:
+
+<pre><code>title: My first photo album
+subject: This photo album is about examples.
+
+filename: one.jpg
+title: My first photo
+description: It's a photo of me.
+
+filename: two.jpg
+title: My second photo
+description: A second photo.</code></pre>
+
+The only name-value pair that must be present for each item in a Catalogue is <dfn>filename</dfn>.  If PubTal is configured to generate one web page for each item in the catalogue (the default), it will use the filename given for each item, changing the extension to that of the template file.
+
+PubTal can also be configured to generate an index HTML page for the Catalogue (again enabled by default).  This master page will use the name of the catalogue file, changing the extension to that of the template file.
+
+<h2>Catalogues and Templates</h2>
+The templates used by PubTal to generate the web pages, for individual items and for the master index, can be set in the site configuration file.  The two configuration options used to control the templates are <dfn>catalogue-item-template</dfn> and <dfn>catalogue-index-template</dfn> respectively.
+
+Both templates are given access to a page object similar to the one used for HTMLText.  When the item template is being expanded, the headers property contains the name-value pairs for this particular item.  When the master index is generated, the name-values pairs for the Catalogue are used.
+
+Additionally both templates are given access to an object called "catalogue" which contains properties for the whole Catalogue.  These properties include a list of page objects, one for each item in the Catalogue, and the headers associated with the Catalogue.  Two other useful properties present when expanding the individual items template are "previous" and "next", which contain a copy of the "page" object given to the previous and next item in the list.
+
+<h2>Template Properties</h2>
+<h3>page</h3>
+The following properties are <b>not</b> available on the page objects given to Catalogue templates, unless the catalogue-item-content-type has been set:
+<ul>
+  <li>content - This property has no meaning for Catalogues, unless they are catalogues of content</li>
+  <li>rawContent</li>
+</ul>
+
+<h3>catalogue</h3>
+The catalogue object has the following properties:
+<ul>
+  <li>entries - A list of page objects, with one page object for each item in the catalogue.</li>
+  <li>rows - A list of lists containing the page objects for each item in the catalogue.</li>
+  <li>headers - The headers associated with this catalogue.</li>
+  <li>previous - The page object for the previous item in the list (not present for the first item in the list and the index web page).</li>
+  <li>next - The page object for the next item in the list (not present for the last item and the index web page).</li>
+</ul>
+
+The <dfn>rows</dfn> property can be used by the index template to display catalogue items in rows and columns rather than as a continuous list.  This is best illustrated by an example template fragment:
+
+<pre><code>
+&lt;table&gt;
+  &lt;tr tal:repeat="row catalogue/rows"&gt;
+    &lt;td tal:repeat="item row"&gt;&lt;b tal:content="item/headers/title"&gt;&lt;/b&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+
+The number of columns in each row can be changed by setting the catalogue-max-columns parameter in the site configuration file (defaults to 5).  This property is especially useful for photo albums.
+
+<h2>Example Templates</h2>
+Here are an index and item example template which could be used by our example photo album:
+
+<pre><code>
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;h1 tal:content="page/headers/title"&gt;Album Title&lt;/h1&gt;
+    &lt;p tal:content="page/headers/subject"&gt;Album subject&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li tal:repeat="photo catalogue/items"&gt;
+         &lt;a tal:content="photo/headers/title" tal:attributes="photo/destinationFilename"&gt;Photo link&lt;/a&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+This template will produce a list of links to individual item pages (in this example containing the photo).  The headers of the individual items can be accessed in this loop, enabling the link to be the title of the photo.
+
+An example item template shows how navigation between item pages can be easily achived:
+
+<pre><code>
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Photo from Album: &lt;b tal:replace="catalogue/headers/title"&gt;title&lt;/b&gt;&lt;/h1&gt;
+    &lt;h2 tal:content="page/headers/title"&gt;Title for this photo&lt;/h2&gt;
+    &lt;p tal:content="page/headers/description"&gt;Description for this photo&lt;/p&gt;
+
+    &lt;img tal:attributes="string: images/${page/headers/filename"&gt;
+
+    &lt;a tal:condition="previous" tal:attributes="href catalogue/previous/destinationFilename"&gt;Previous Photo (&lt;b tal:replace="catalogue/previous/headers/title"&gt;)&lt;/a&gt;
+    &lt;br&gt;
+    &lt;a tal:condition="next" tal:attributes="href catalogue/next/destinationFilename"&gt;Next Photo (&lt;b tal:replace="catalogue/next/headers/title"&gt;)&lt;/a&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+The "previous" and "next" properties contain a full page object, and so the destinationFilename as well as header information can be accessed.
+
+<h2>Catalogues of Content</h2>
+Catalogues can also be used to organise PubTal content.  This is useful for generating tables of contents and previous/next navigation links on individual pages.  When a Catalogue has the option <dfn>catalogue-item-content-type</dfn> set to a value other than "None", PubTal will read the file specified for each entry by "filename", and treat it as a piece of content.  The means that the context used to expand the individual items template will have:
+<ul>
+<li>Any headers in the content merged into the page/headers object.</li>
+<li>Both page/content and page/rawContent containing the content from the entry file.</li>
+</ul>
+
+An example of how this can be used is given in the "examples/toc-example" directory included with the download.
+
+To specify which files are treated as Catalogues please refer to the <a href="../conf/conf.html">Configuration</a> section.

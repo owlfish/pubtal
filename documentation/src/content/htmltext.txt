@@ -1,0 +1,25 @@
+title: Writing in HTMLText
+subject: Writing PubTal content using HTMLText.
+
+To write PubTal content in the HTMLText format all you need is a text editor.  The file format is very simple: headers are written at the start of the file, followed by a blank line, and then the page body.
+
+<h2>Headers</h2>
+An unlimited number of headers can be defined, or none at all.  The body of the content must be separated from the headers with a single blank line (even when no headers are used).
+
+An example of some headers:
+<pre><code>title: This is a test.
+description: This test has two test headers.
+
+This is the body of the page.</code></pre>
+
+When PubTal generates the web page for this content file, it will pass the headers to the template.  Headers can also be specified in the configuration file (see <a href="../conf/conf.html">Configuration</a>).  If the header in a content file is also in the configuration file, the header in the content file is used.
+
+<h2>HTML and XHTML</h2>
+If the template's output-type is set to "HTML" then newlines will be replaced with &lt;br&gt; tags.  If XHTML is set then &lt;br /&gt; tags will be used instead.  PubTal tries to ensure that only valid HTML is published and will report as an error any badly nested HTML present in a document.
+
+<h2>Template Properties</h2>
+In addition to the properties listed in the <a href="../conf/templates.html">Template Basics</a> section, HTMLText content also generates an additional property: rawContent.
+
+This is available on the page object (i.e. the TAL path is page/rawContent), and holds a copy of the HTMLText content in its unparsed form.
+
+To specify which files are treated as HTMLText please refer to the <a href="../conf/conf.html">Configuration</a> section.

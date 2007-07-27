@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Optional Plugins</title>
+	<link href="../style/site.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<h1>Optional Plugins</h1>
+  <p id="subject">Optional PubTal Plugins.</p>
+  <div><h2>Plugins</h2>
+<p>Plugins can be used to add support for additional content types or upload methods.&nbsp; Several plugins are installed by default, and the content types that they provide are described elsewhere in this manual.</p>
+<p>Several plugins are provided that are not installed by default, but included with PubTal in the "optional-plugins" directory.&nbsp; These are documented here.</p>
+<ul>
+	<li>pytextile.py - This plugin provides support for <a href="http://www.textism.com/tools/textile/">Textile</a> and requires <a href="http://diveintomark.org/projects/pytextile/">pyTextile</a>&nbsp; and Python 2.2 to be installed.</li>
+	<li>abiwordContent - This plugin provides support for using the AbiWord application to author web pages.&nbsp; AbiWord has in the past saved corrupted files, so use with caution.</li>
+	<li>CSVPlugin - Provides support for generating multiple web pages based on the contents of a .CSV file.</li>
+</ul>
+<h2>Textile</h2>
+<p>The pytextile.py plugin provides support for the Textile content type.&nbsp; In addition to the properties listed in the <a href="../conf/templates.html">Template Basics</a> section, Textile content also generates an additional property: rawContent.</p>
+<p>This is available on the page object (i.e. the TAL path is page/rawContent), and holds a copy of the Textile content in its unparsed form.</p>
+<h2>Abiword</h2>
+<p>The abiwordContent plugin provides support for the Abiword content type.&nbsp; In addition to the properties listed in the <a href="../conf/templates.html">Template Basics</a> section, Abiword content also generates an additional property: footnotes.</p>
+<p>This is available on the page object (i.e. the TAL path is page/footnotes), and holds a list of footnotes.&nbsp; These can be used in a template as follows:</p>
+<pre><code>&lt;div&gt;
+&nbsp; &lt;div tal:repeat="footnote page/footnotes" tal:replace="structure footnote"&gt;Foonotes go here&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h2>CSVSortedTables</h2>
+<p>This is a complex content type provided by CSVPlugin.&nbsp; The plugin registers the file extension *.csvst as containing CSVSortedTables content.&nbsp; The file format of the *.csvst file is similar to that of the PubTal site configuration file, i.e. directives with options.&nbsp; The file defines a source CSV file that contains comma separated values, with the first row in the file being the name of each column.&nbsp; The file then goes on to define the pages that should be produced based on the CSV file, including any sorting that should be applied to the data.</p>
+<p>Here is an example of a *.csvst file that demonstrates all of the options available:</p>
+<pre><code>source-file employees-file.csv
+&lt;Page employeesByName.html&gt;
+header title Employees sorted by Name
+&nbsp; &lt;sort name&gt;
+&nbsp; &lt;/sort&gt;
+&lt;/Page&gt;
+&lt;Page employeesByLevel.html&gt;
+header title Employees sorted by Level, then Name
+&nbsp; &lt;sort level&gt;
+&nbsp; value VP 0
+&nbsp; value Manager 1
+&nbsp; value Team Lead 2
+&nbsp; empty-value 3
+&nbsp; &lt;/sort&gt;
+&nbsp; &lt;sort name&gt;
+&nbsp; &lt;/sort&gt;
+&lt;/Page&gt;</code></pre>
+<p>The source-file option <b>must</b> come first, and specifies the source CSV data file (relative to the *.csvst file).&nbsp; The &lt;Page <i>pageName.html</i>&gt; directives can contain header options that define name-value pairs.&nbsp; The <i>pageName.html</i> is the exact name of the page to be generated.</p>
+<p>The &lt;sort <i>column-name</i>&gt; directives must be nested within the &lt;Page&gt; directives, and define how the data should be sorted.&nbsp; The order of the &lt;sort&gt; directives defines which column is sorted first.&nbsp; Within the directive two options can be used: value and empty-value.&nbsp; The value option is used to map a column value to a sort priority; the lower the priority the higher up in the list it appears.&nbsp; The empty-value option defines the sort priority to use for an empty value.&nbsp; If no options are specified the column will be sorted by alphabetical order.</p>
+<h3>Template Properties</h3>
+<p>The CSVSortedTables content type provides the CSV data through page/content as a list.&nbsp; To access column values for a particular row use the name of the column.&nbsp; As an example the template for the employee csvst file above could be:</p>
+<pre><code>&lt;table&gt;
+&nbsp; &lt;tr&gt;
+&nbsp;&nbsp;&nbsp; &lt;th&gt;&lt;a href="employeesByName.html"&gt;Employee Name&lt;/a&gt;&lt;/th&gt;
+&nbsp;&nbsp;&nbsp; &lt;th&gt;&lt;a href="employeesByLevel.html"&gt;Employee Level&lt;/a&gt;&lt;/th&gt;
+&nbsp; &lt;/tr&gt;
+&nbsp; &lt;tr tal:repeat="employee page/content"&gt;
+&nbsp;&nbsp;&nbsp; &lt;td tal:content="employee/name"&gt;&lt;/td&gt;
+&nbsp;&nbsp;&nbsp; &lt;td tal:content="employee/level"&gt;&lt;/td&gt;
+&nbsp; &lt;/tr&gt;
+&lt;/table&gt;</code></pre>
+</div>
+	  
+	
+  <div class="navbar">
+  <a href="index.html" title="Contents">Contents</a>
+  </div>
+  <p id="version">PubTal Version 3.2.0</p>
+  <div id="footer">
+  <p>File: optional-plugins.txt</p>
+  <p>Last modified: Sun, 25 Apr 2004 05:08:18 BST</p>
+  <p>Copyright 2006 Colin Stewart</p>
+  <p title="PubTal is a template driven web site publisher.">Made with <a href="http://www.owlfish.com/software/PubTal/">PubTal</a> 3.2.0</p>
+  </div>
+</body>

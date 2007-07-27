@@ -1,0 +1,19 @@
+title: This is a textile test.
+
+h1. A test
+
+h2. Another part of the test.
+
+So *here* is some textile.  A quote would be:
+
+bq. Another test for you and me.
+
+# Point 1
+# Point 2
+
+* Important!
+* Do this!
+
+But _does_ it work?  This -no longer applies-, but +this is new+ does.  D^2^.  This looks like code: @print "Hello world."@
+
+The "BBC":http://www.bbc.co.uk.  Try "Colin's Journal(A really neat weblog)":http://www.owlfish.com/weblog/  Can you read this?  Hmm...

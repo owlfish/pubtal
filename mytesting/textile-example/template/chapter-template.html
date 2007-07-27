@@ -1,0 +1,28 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+  <title tal:content="page/headers/title">Table of content example</title>
+  <link rel="stylesheet" tal:attributes="href string:${page/depth}style/site.css" type="text/css">  
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+  <meta name="author" tal:attributes="content pages/headers/author">   
+</head>
+<body>
+	<div id="navigationBar">
+		<span tal:condition="exists:catalogue/previous" tal:omit-tag="">
+			<a tal:attributes="href string:${page/depth}${catalogue/previous/destinationPath}" tal:content="catalogue/previous/headers/title">Previous</a> - 
+		</span>
+		<a tal:attributes="href string:${page/depth}index.html">Index.</a>
+		<span tal:condition="exists:catalogue/next" tal:omit-tag="">
+			- <a tal:attributes="href string:${page/depth}${catalogue/next/destinationPath}" tal:content="catalogue/next/headers/title">Next</a>
+		</span>
+	</div>
+	<h1 tal:content="page/headers/title">title</h1>
+	<h2 tal:condition="page/headers/note">Note: <b tal:replace="page/headers/note"></b></h2>
+	<h3 tal:condition="page/headers/description">Description: <b tal:replace="page/headers/description"></b></h3>
+	<div tal:content="structure page/content">body</div>
+
+	<div id="footer">
+		<p tal:replace="structure pubtal/linkText">Link</p>
+	</div>
+</body>
+</html>

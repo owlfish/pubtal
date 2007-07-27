@@ -1,0 +1,12 @@
+<html>
+<body>
+  <div metal:define-macro="navbar">
+  	<a tal:attributes="href string:${page/depth}index.html">Home</a>
+  	<a tal:attributes="href string:${page/depth}first.html">First Page</a>
+  	<a tal:attributes="href string:${page/depth}second/index.html">Second Page</a>
+  </div>
+  <h1 tal:content="page/headers/title">Title</h1>
+  <div tal:content="structure page/content">Body</div>
+  <p metal:define-macro="email">A <b>fancy</b> email address: me@mydomain.com</p> 
+  <p>Last modified: <b tal:replace="page/lastModifiedDate">Date</b></p>
+</body>

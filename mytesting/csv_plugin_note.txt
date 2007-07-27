@@ -1,0 +1,180 @@
+site.config example:
+
+<Content medieval.csv>
+	<Page myByName.html>
+	header sortType Alphabetically
+	header PageByName 1
+		<Sort name>
+		</Sort>
+	</Page>
+	<Page myByType.html>
+	header sortType by Type
+	header PageByType 1
+		<Sort type>
+		value P 0
+		value G 1
+		value U 2
+		value S 3
+		value I 4
+		value ~ 5
+		value ? 6	
+		empty-value 7
+		</Sort>
+	</Page>
+	<Page myByFrequency.html>
+	header sortType by Frequency
+	header PageByFrequency 1
+		<Sort frequency>
+		value Always 5
+		value Frequently 4
+		value Sometimes 3
+		value Rarely 2
+		empty-value 1
+		</Sort>
+	</Page>
+</Content>
+
+
+CSV Implementation options:
+	1 - One file per page that contains the configuration information and the name of the
+		source file.
+			Pros:
+				 - No change to Page production method.
+			Cons:
+				 - Individual pages can be regenerated instead of always doing all of them.
+				 
+	2 - One source file, configuration information in site.config
+			Pros:
+				 - Single source file generates multiple destination files.
+			Cons:
+				 - Plugin must be involved in page production.
+	
+	3 - One configuration file, which references source file.
+			Pros:
+				 - Single source file generates multiple destination files.
+				 - Custom config file can be used.
+			Cons:
+				 - Plugin must be involved in page production.
+				 
+	4 - One config file with un-handled CSV file.
+			Pros:
+				 - Single file generates multiple destination files.
+				 - No change in Page production method.
+				 
+
+Option 3 config file:
+source-file medieval.csv
+<Page myByName.html>
+header sortType Alphabetically
+header PageByName 1
+	<sort name>
+	</sort>
+</Page>
+<Page myByType.html>
+header sortType by Type
+header PageByType 1
+	<sort alias>
+	</sort>
+	<sort type>
+	value P 0
+	value G 1
+	value U 2
+	value S 3
+	value I 4
+	value ~ 5
+	value ? 6	
+	empty-value 7
+	</sort>
+	<sort name>
+	</sort>
+</Page>
+<Page myByFrequency.html>
+header sortType by Frequency
+header PageByFrequency 1
+	<sort alias>
+	</sort alias>
+	<sort frequency>
+	value Always 5
+	value Frequently 4
+	value Sometimes 3
+	value Rarely 2
+	empty-value 1
+	</sort>
+	<sort name>
+	</sort>
+</Page>
+</pages>
+
+Weblog Implementation options:
+	1 - .post file per post, configuration information in site.config
+			Pros:
+				 - One config file to rule them all.
+			Cons:
+				 - Plugin must be involved in page production or plugin must cache
+				   pages that have already been generated.
+				 
+	2 - One weblog config file with un-handled .post files.
+			Pros:
+				 
+			Cons:
+				 - Plugin must be able to influence page production, i.e. need to be able to:
+				   - Publish one post with archive, index, rss.
+				   - Publish all posts with archive, index, rss.
+				   Therefore need some way of passing page generation information to the
+				   plugin without using directory paths?.
+
+How can a plugin be involved with page production?  Logic:
+ - When a content file is found we get it's content type.
+ - If the content handler for this type supports page production then:
+	 - Pass to the content handler:
+		 - Auto-generated page
+		 - Current list of pages
+		 - All targets passed to the updateSite.py 
+		 
+CSV Handler would:
+	- Generate three Page objects and add them to the list.
+	
+Weblog handler would:
+	- Determine whether all pages or a discrete list of posts should be generated.
+	- Create the required Page objects depending on the list of posts.
+	
+What should the interface to the weblog production be?
+	- In the GUI we can pass extra parameters to PathResolver (needs better name!).
+	- From the CLI:
+		- updateSite.py --class all site.conf weblog
+		- updateSite.py --class 2004/02/29/14:41.post site.conf weblog
+		
+	Alternatives:
+		Can do a checksum of all .post files (245 files in 0.36s (0.8 with overhead))
+		Can do a checksum of all current posts (i.e. all posts that make up the index)
+		
+Default:
+	- Checksum the last indexNumber posts to determine what needs to be rebuilt.
+	
+Introduce classes.  Default class is 'normal'.  With no parameters only content in the
+normal class is built.  --all builds all classes. --class takes a comma separated list of
+classes to build.
+
+Weblog plugin auto-associates two classes:
+	allweblog - Every post falls into this class
+	normal - The last indexNumber posts fall into this class
+	
+PathResolver becomes PageBuilder.  New signature:
+	getPages (targets, options={})
+	
+options:
+	classes - List of classes to build.
+	buildAllClasses - If true then build all classes.
+	contentConfig - Dictionary of content specific options.  E.g.
+					{'weblog/weblog.ini': {'posts': ['2004/02/28/14:32.post', '2003/01/01/00:00.post']}}
+					
+updateSite.py can now pass parameters to the content specific page generator algorithms.
+
+
+Plugins, upon initialisation, can:
+	- Call config = PagePublisher.getConfig()
+	- Call contentConfig = config.getContentConfig()
+	- Call contentConfig.registerPageBuilder (contentType, self.builderMethod)
+	
+	- builderMethod will be invoked with (page, options)
+	

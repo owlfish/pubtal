@@ -1,0 +1,15 @@
+recursive-include bin *.py
+recursive-include lib *.py
+recursive-include examples *.txt *.post *.sxw *.config *.html *.css *.catalogue *.chapter
+recursive-include tests *.py *.sxw *.jpg
+recursive-include optional-plugins *.py
+recursive-include documentation *.txt *.sxw *.config *.html *.css
+include *.txt *.py
+prune */.svn
+prune */*/.svn
+prune */*/*/.svn
+prune */*/*/*/.svn
+prune */*/*/*/*/.svn
+prune */*/*/*/*/*/.svn
+prune */*/*/*/*/*/*/.svn
+prune */*/*/*/*/*/*/*/.svn

@@ -1,0 +1,220 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Writing PubTal Templates</title>
+	<link href="../../style/site.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<h1>Writing PubTal Templates</h1>
+  <p id="subject">Guide to writing your own templates.</p>
+  <div><p>Writing PubTal templates should be very easy if you are already familiar with TAL; if this is the case jump down to the <a href="#properties">available properties</a>.&nbsp; If TAL is new to you, then read on for a quick introduction; it's very easy to pick up.</p>
+<h2>Required TAL</h2>
+<p>All TAL commands consist of attributes on HTML elements.&nbsp; The three most common TAL commands for use in PubTal templates are tal:content, tal:replace, tal:attributes.&nbsp; Each of these is described briefly here:</p>
+<ol><li><p>&lt;b tal:content="path"&gt;test&lt;/b&gt; - Replaces the word "test" with the contents of the "path", leaving the "b" tags intact.</p>
+</li><li><p>&lt;b tal:replace="path"&gt;test&lt;/b&gt; - Replaces the word "test" and the enclosing "b" tags with the contents of the "path".</p>
+</li><li><p>&lt;b tal:attributes="attname path"&gt;test&lt;/b&gt; - Adds the HTML attribute "attname" to the "b" element, setting the value to the contents of the "path".</p>
+</li></ol>
+<p></p>
+<p>Both tal:content and tal:replace take an optional keyword "structure" that stops TAL escaping any HTML special characters that might be in the path content.&nbsp; E.g. &lt;div tal:content="structure page/content"&amp;&gt;Body&lt;/div&gt; includes any HTML in the content body directly into the template without escaping it.</p>
+<h3>TAL Paths</h3>
+<p>The two kinds of path most commonly used in PubTal are ordinary paths (e.g. page/content) which point to data, and string paths.&nbsp; A string path contains a mixture of fixed text, and data included using the syntax ${ordinaryPath}.&nbsp; An example of a string path is &lt;b tal:content="string: Copyright ${page/copyrightYear} By Me"&gt;&lt;/b&gt;.&nbsp; PubTal supplies the current year in the "page/copyrightYear" path, so the string will become "Copyright 2004 By Me" (depending on the year you run it!).</p>
+<h3>More TAL</h3>
+<p>Although only the most common TAL commands have been documented here, PubTal supports all TAL and METAL commands.&nbsp; For documentation on all available commands please refer to the <a href="http://www.zope.org/Documentation/Books/ZopeBook/current/AppendixC.stx">Zope Book's</a> description of the language.</p>
+<h2><a name="properties"></a>Available Properties</h2>
+<p>The properties available to a TAL template vary with the content type being used.&nbsp; There are several properties that are common across most content types, and these are documented here.</p>
+<h3>page</h3>
+<p>The page object has the following properties:</p>
+<p></p>
+<p>headers - This object contains the name-value pairs applicable for this page.&nbsp; (e.g. page/headers/title might contain "My first title"). </p>
+<ol><li><p>content - The body of the page, with expanded HTML, as taken from the content file.</p>
+</li><li><p>sourcePath - The filename of the content file (relative to the content directory).</p>
+</li><li><p>absoluteSourcePath - The absolute path to the content file.</p>
+</li><li><p>destinationPath - The filename of the destination file (relative to the destination directory).</p>
+</li><li><p>absoluteDestinationPath - The absolute path to the destination file.</p>
+</li><li><p>absoluteDestinationURL - The absolute URL for this page (requires url-prefix to have been set)</p>
+</li><li><p>destinationFilename - The filename of destination file.</p>
+</li><li><p>depth - The offset from the current directory back to root - see below.</p>
+</li><li><p>copyrightYear - <a href="#date-objects">DATE Object.</a>&nbsp; Defaults to a four digit year (e.g. 2004).</p>
+</li><li><p>lastModifiedDate - <a href="#date-objects">DATE Object</a>.&nbsp; Defaults to RFC822<a name="srcftn1" style="vertical-align: super" href="#ftn1">1</a> format.</p>
+</li></ol>
+<p></p>
+<p>The "depth" property takes the value of the offset required to get back to the root of the destination directory.&nbsp; For example, if the destination directory is "dest", then the file "dest/test/index.html" would have a depth of "../".&nbsp; By using this property, the template can adjust its links so that they work for any content, regardless of how deep into the directory structure it is.&nbsp; An example of how this can be used is:</p>
+<pre><code>&lt;a tal:attributes="href string:${page/depth}index.html"&gt;Home&lt;/a&gt;</code></pre>
+<p></p>
+<p>The other objects and properties available to the PubTal templates are more complex, and are not required before simple sites can be created.&nbsp; If the following descriptions are confusing, don't panic, just refer to this section later once you are more familiar with TAL.</p>
+<h3>macros</h3>
+<p>The macros object holds the macros included from templates.&nbsp; Take an example where a template "base.html" exists that declares two macros "email" and "navbar".&nbsp; The following configuration directive could be used to make them available to a template:</p>
+<pre><code>&lt;Content&gt;</code></pre>
+<pre><code>macro site-macros base.html</code></pre>
+<pre><code>&lt;/Content&gt;</code></pre>
+<p></p>
+<p>The template could access then these macros using macros/site-macros/email and macros/site-macros/navbar.&nbsp; See the <a href="#macro-example">Macro Example</a> below for more details.</p>
+<h3>ispage</h3>
+<p>This is a special object that takes the path passed to it and returns true if the current page being built matches that path, or false otherwise.&nbsp; This is useful when building navigation links in a page and you wish to exclude the link to the current page:</p>
+<p></p>
+<pre><code>&lt;a tal:omit-tag="ispage/index.html" href="index.html"&gt;Index&lt;/a&gt;</code></pre>
+<pre><code>&lt;a tal:omit-tag="ispage/test/resources.html" href="test/resources.html"&gt;Resources&lt;/a&gt;</code></pre>
+<h3>readFile</h3>
+<p>A special object that evaluates the path passed to it and then treats the resulting value as a filename relative to the content directory.&nbsp; The file is then read and the contents returned.&nbsp;&nbsp; Example: If each page should have a different quotation before the content then a template could include:</p>
+<pre><code>&lt;div tal:replace="readFile/headers/quotationFile"&gt;&lt;/div&gt;</code></pre>
+<p>Each content file could then define a header called "quotationFile" which is the filename that contains a particular quote.</p>
+<h3>pubtal</h3>
+<p>The pubtal object has the following properties:</p>
+<ol><li><p>linkText - A standard "Made with PubTal" text (use &lt;p tal:replace="structure pubtal/linkText"&gt;&lt;/p&gt; to include) </p>
+</li><li><p>version - The version of pubtal in use</p>
+</li><li><p>url - The URL for PubTal</p>
+</li></ol>
+<h3><a name="date-objects"></a>Date Objects</h3>
+<p>All Date objects have a default output format associated with them.&nbsp; A TAL path that references the object directly will take the value of the DateTime in the local time zone in the default format.</p>
+<p>Paths can be used to pass a specific date/time format.&nbsp; The two paths supported are 'local' and 'utc'.&nbsp; For example to output just the time component of a last modified date in UTC use <code>page/lastModifiedDate/utc/%H:%M</code>.&nbsp; To get the same output in the local time zone use: <code>page/lastModifiedDate/local/%H:%M</code>.</p>
+<p>The format characters supported by Date objects are those supported by the TimeFormat<a name="srcftn2" style="vertical-align: super" href="#ftn2">2</a> library, reproduced here for convenience.&nbsp; </p>
+<p>Formatting codes are of the form: %CODE[MODIFIER].&nbsp; The use of [MODIFIER] is optional.</p>
+<table><thead><tr><th><p style="text-align:center;font-weight:bold">CODE</p>
+</th><th><p style="font-weight:bold">Value and default modifier.</p>
+</th></tr></thead><tbody><tr><td><p style="text-align:center">a</p>
+</td><td><p>Weekday in locale (Default Modifier: LONG)</p>
+</td></tr><tr><td><p style="text-align:center">b</p>
+</td><td><p>Month in locale (Default Modifier: LONG)</p>
+</td></tr><tr><td><p style="text-align:center">c</p>
+</td><td><p>Locale's date/time representation</p>
+</td></tr><tr><td><p style="text-align:center">C</p>
+</td><td><p>Century as a decimal.</p>
+</td></tr><tr><td><p style="text-align:center">d</p>
+</td><td><p>Day of month (Default Modifier: 0)</p>
+</td></tr><tr><td><p style="text-align:center">H</p>
+</td><td><p>Hour in 24 hour format (Default Modifier: 0)</p>
+</td></tr><tr><td><p style="text-align:center">I</p>
+</td><td><p>Hour in 12 hour format (Default Modifier: 0)</p>
+</td></tr><tr><td><p style="text-align:center">j</p>
+</td><td><p>Day of year as a number (Default Modifier: 0)</p>
+</td></tr><tr><td><p style="text-align:center">m</p>
+</td><td><p>Month of year as a number (Default Modifier: 0)</p>
+</td></tr><tr><td><p style="text-align:center">M</p>
+</td><td><p>Minute as a number (Default Modifier: 0)</p>
+</td></tr><tr><td><p style="text-align:center">n</p>
+</td><td><p>Newline</p>
+</td></tr><tr><td><p style="text-align:center">p</p>
+</td><td><p>Locale's AM/PM</p>
+</td></tr><tr><td><p style="text-align:center">P</p>
+</td><td><p>Locale's am/pm</p>
+</td></tr><tr><td><p style="text-align:center">r</p>
+</td><td><p>Locale's time in AM/PM format</p>
+</td></tr><tr><td><p style="text-align:center">S</p>
+</td><td><p>Second as a number (Default Modifier: 0)</p>
+</td></tr><tr><td><p style="text-align:center">t</p>
+</td><td><p>Tab character.</p>
+</td></tr><tr><td><p style="text-align:center">T</p>
+</td><td><p>Timezone offset with no colon (e.g. -0400)</p>
+</td></tr><tr><td><p style="text-align:center">U</p>
+</td><td><p>Week number (Sunday first day of week) (Default Modifier: 0)</p>
+</td></tr><tr><td><p style="text-align:center">w</p>
+</td><td><p>Week day as a number (0 = Sunday)</p>
+</td></tr><tr><td><p style="text-align:center">W</p>
+</td><td><p>Week number (Monday first day) (Default Modifier: 0)</p>
+</td></tr><tr><td><p style="text-align:center">x</p>
+</td><td><p>Locale's date representation</p>
+</td></tr><tr><td><p style="text-align:center">X</p>
+</td><td><p>Locale's time representation</p>
+</td></tr><tr><td><p style="text-align:center">y</p>
+</td><td><p>Year without century (Default Modifier: 0)</p>
+</td></tr><tr><td><p style="text-align:center">Y</p>
+</td><td><p>Year with century</p>
+</td></tr><tr><td><p style="text-align:center">Z</p>
+</td><td><p>Timezone TLA (e.g. GMT)</p>
+</td></tr><tr><td><p style="text-align:center">z</p>
+</td><td><p>Timezone in W3C Note format (-hh:mm, +hh:mm or Z)</p>
+</td></tr></tbody></table>
+<p></p>
+<p>Modifiers are only applicable on a sub-set of codes, as defined here:</p>
+<p></p>
+<table><tbody><tr><td><p style="font-weight:bold">MODIFIER</p>
+</td><td><p style="font-weight:bold">Applicable Codes</p>
+</td><td><p style="font-weight:bold">Description</p>
+</td></tr><tr><td><p>SHORT</p>
+</td><td><p>a,b</p>
+</td><td><p>Use a short version if available.</p>
+</td></tr><tr><td><p>LONG</p>
+</td><td><p>a,b</p>
+</td><td><p>Use a long version if available.</p>
+</td></tr><tr><td><p>0</p>
+</td><td><p>d,H,I,j,m,M,S,W,Y</p>
+</td><td><p>Pad with leading zero's</p>
+</td></tr><tr><td><p>SP</p>
+</td><td><p>d,H,I,j,m,M,S,W,Y</p>
+</td><td><p>Pad with leading space's</p>
+</td></tr><tr><td><p>NP</p>
+</td><td><p>d,H,I,j,m,M,S,W,Y</p>
+</td><td><p>Do not pad</p>
+</td></tr></tbody></table>
+<p></p>
+<p>Example: At 16:18 the format string "%I[NP]:%M" will produce "4:18".</p>
+<h2><a name="macro-example"></a>Macro Example</h2>
+<p>Macros are implemented using <a href="http://www.zope.org/Wikis/DevSite/Projects/ZPT/METAL%20Specification%201.0">METAL</a>, a language complementary to TAL, which is used to define and include macros.&nbsp; Macros allow parts of templates to be shared across multiple templates, enabling easier maintenance when dealing with several templates for the same site.</p>
+<p></p>
+<p>This example is included in the PubTal download.</p>
+<p></p>
+<h3>The website</h3>
+<p>This example uses a simple website with three pages:</p>
+<ol><li><p>index.html</p>
+</li><li><p>first.html</p>
+</li><li><p>second/index.html</p>
+</li></ol>
+<h3>The config file</h3>
+<p>The example uses the following configuration file:</p>
+<p></p>
+<pre><code># Use base.html as the default template</code></pre>
+<pre><code>&lt;Content&gt;</code></pre>
+<pre><code>template base.html</code></pre>
+<pre><code>&lt;/Content&gt;</code></pre>
+<pre><code></code></pre>
+<pre><code># For the second directory, use second.html as the default template</code></pre>
+<pre><code>&lt;Content second&gt;</code></pre>
+<pre><code>template second.html</code></pre>
+<pre><code># Make macros in base.html available under site-macros.</code></pre>
+<pre><code>macro site-macros base.html</code></pre>
+<pre><code>&lt;/Content&gt;</code></pre>
+<p></p>
+<h3>A Macro Template</h3>
+<p>A template which contains one or more macros can be used just like an ordinary template.&nbsp; The declaration of the macro doesn't interfere with its function as a template in any way.&nbsp; The base.html template in this example is:</p>
+<pre><code>&lt;html&gt;</code></pre>
+<pre><code>&lt;body&gt;</code></pre>
+<pre><code>&nbsp;&nbsp;&lt;div metal:define-macro="navbar"&gt;</code></pre>
+<pre><code>&nbsp;&nbsp;&lt;a tal:attributes="href string:${page/depth}index.html"&gt;Home&lt;/a&gt;</code></pre>
+<pre><code>&nbsp;&nbsp;&lt;a tal:attributes="href string:${page/depth}first.html"&gt;First Page&lt;/a&gt;</code></pre>
+<pre><code>&nbsp;&nbsp;&lt;a tal:attributes="href string:${page/depth}second/index.html"&gt;Second Page&lt;/a&gt;</code></pre>
+<pre><code>&nbsp;&nbsp;&lt;/div&gt;</code></pre>
+<pre><code>&nbsp;&nbsp;&lt;h1 tal:content="page/headers/title"&gt;Title&lt;/h1&gt;</code></pre>
+<pre><code>&nbsp;&nbsp;&lt;div tal:content="structure page/content"&gt;Body&lt;/div&gt;</code></pre>
+<pre><code>&nbsp;&nbsp;&lt;p metal:define-macro="email"&gt;A &lt;b&gt;fancy&lt;/b&gt; email address: me@mydomain.com&lt;/p&gt; </code></pre>
+<pre><code>&nbsp;&nbsp;&lt;p&gt;Last modified: &lt;b tal:replace="page/lastModifiedDate"&gt;Date&lt;/b&gt;&lt;/p&gt;</code></pre>
+<pre><code>&lt;/body&gt;</code></pre>
+<h3>A second template</h3>
+<p>To use the macros in the second template we use the metal:use-macro command.&nbsp; An example of a second.html template is:</p>
+<p></p>
+<pre><code>&lt;html&gt;</code></pre>
+<pre><code>&lt;body&gt;</code></pre>
+<pre><code>&nbsp;&nbsp;&lt;h1 tal:content="page/headers/title"&gt;Title&lt;/h1&gt;</code></pre>
+<pre><code>&nbsp;&nbsp;&lt;div tal:content="structure page/content"&gt;Body&lt;/div&gt;</code></pre>
+<pre><code>&nbsp;&nbsp;&lt;p metal:use-macro="macros/site-macros/email"&gt;Email goes here.&lt;/p&gt;</code></pre>
+<pre><code>&nbsp;&nbsp;&lt;p metal:use-macro="macros/site-macros/navbar"&gt;Nav bar here.&lt;/p&gt;</code></pre>
+<pre><code>&lt;/body&gt;</code></pre>
+<h3>Notes</h3>
+<p>The second.html template can include the macros declared in the base.html template anywhere, even multiple times, using the metal:use-macro command.&nbsp; Any TAL that forms part of the included macro (in this case the tal:attributes commands in the "navbar" macro) will be expanded as though it had been placed directly in the second.html template.</p>
+</div>
+	  <div id="footnotes">
+		<p style="margin-left:0.499cm"><a name="ftn1" style="vertical-align: super" href="#srcftn1">1</a>E.g. Tue, 09 Mar 2004 18:49:16 EST</p>
+<p style="margin-left:0.499cm"><a name="ftn2" style="vertical-align: super" href="#srcftn2">2</a>The <a href="http://www.owlfish.com/software/TimeFormat/">TimeFormat</a> library is included with PubTal, and is also available separately for use in other projects.</p>
+
+	</div>
+	
+  <div class="navbar">
+  <a href="../index.html" title="Contents">Contents</a>
+  </div>
+  <p id="version">PubTal Version 3.2.0</p>
+  <div id="footer">
+  <p>File: conf/templates.sxw</p>
+  <p>Last modified: Mon, 02 Jan 2006 16:16:12 GMT</p>
+  <p>Copyright 2006 Colin Stewart</p>
+  <p title="PubTal is a template driven web site publisher.">Made with <a href="http://www.owlfish.com/software/PubTal/">PubTal</a> 3.2.0</p>
+  </div>
+</body>

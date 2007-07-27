@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<rss version="0.91">
+	<channel>
+		<title tal:content="page/weblog-name"></title>
+		<link tal:content="page/weblog-link">URL</link>
+		<description tal:condition="exists: page/headers/weblog-description" tal:content="page/headers/weblog-description">Description</description>
+		<copyright tal:condition="page/headers/author" tal:content="page/headers/author">Author</copyright>
+		<language tal:content="page/headers/language|string: en"></language>
+		<lastBuildDate tal:content="page/lastModifiedDate"></lastBuildDate>
+		<image tal:condition="exists:page/headers/weblog-image-url">
+			<title tal:content="page/weblog-name"></title>
+			<url tal:content="page/headers/weblog-image-url"></url>
+			<link tal:content="page/weblog-link"></link>
+		</image>
+		<removedTag tal:omit-tag="" tal:repeat="day page/days">
+			<item tal:repeat="entry day/posts">
+				<title><subjectBit tal:replace="entry/headers/title | entry/headers/date/local/%Y-%m-%d %H:%M:%S">Entry title</subjectBit></title>
+				<link tal:content="entry/absolutePermaLink"></link>
+			<description tal:content="entry/content">Content</description>
+			</item>
+		</removedTag>
+	</channel>
+</rss>

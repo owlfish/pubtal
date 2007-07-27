@@ -1,0 +1,66 @@
+title: Optional Plugins
+subject: Optional PubTal Plugins.
+
+<h2>Plugins</h2>
+Plugins can be used to add support for additional content types or upload methods.  Several plugins are installed by default, and the content types that they provide are described elsewhere in this manual.
+
+Several plugins are provided that are not installed by default, but included with PubTal in the "optional-plugins" directory.  These are documented here.
+<ul>
+	<li>pytextile.py - This plugin provides support for <a href="http://www.textism.com/tools/textile/">Textile</a> and requires <a href="http://diveintomark.org/projects/pytextile/">pyTextile</a>  and Python 2.2 to be installed.</li>
+	<li>abiwordContent - This plugin provides support for using the AbiWord application to author web pages.  AbiWord has in the past saved corrupted files, so use with caution.</li>
+	<li>CSVPlugin - Provides support for generating multiple web pages based on the contents of a .CSV file.</li>
+</ul>
+
+<h2>Textile</h2>
+The pytextile.py plugin provides support for the Textile content type.  In addition to the properties listed in the <a href="../conf/templates.html">Template Basics</a> section, Textile content also generates an additional property: rawContent.
+
+This is available on the page object (i.e. the TAL path is page/rawContent), and holds a copy of the Textile content in its unparsed form.
+
+<h2>Abiword</h2>
+The abiwordContent plugin provides support for the Abiword content type.  In addition to the properties listed in the <a href="../conf/templates.html">Template Basics</a> section, Abiword content also generates an additional property: footnotes.
+
+This is available on the page object (i.e. the TAL path is page/footnotes), and holds a list of footnotes.  These can be used in a template as follows:
+<pre><code>&lt;div&gt;
+  &lt;div tal:repeat="footnote page/footnotes" tal:replace="structure footnote"&gt;Foonotes go here&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<h2>CSVSortedTables</h2>
+This is a complex content type provided by CSVPlugin.  The plugin registers the file extension *.csvst as containing CSVSortedTables content.  The file format of the *.csvst file is similar to that of the PubTal site configuration file, i.e. directives with options.  The file defines a source CSV file that contains comma separated values, with the first row in the file being the name of each column.  The file then goes on to define the pages that should be produced based on the CSV file, including any sorting that should be applied to the data.
+
+Here is an example of a *.csvst file that demonstrates all of the options available:
+<pre><code>source-file employees-file.csv
+&lt;Page employeesByName.html&gt;
+header title Employees sorted by Name
+  &lt;sort name&gt;
+  &lt;/sort&gt;
+&lt;/Page&gt;
+&lt;Page employeesByLevel.html&gt;
+header title Employees sorted by Level, then Name
+  &lt;sort level&gt;
+  value VP 0
+  value Manager 1
+  value Team Lead 2
+  empty-value 3
+  &lt;/sort&gt;
+  &lt;sort name&gt;
+  &lt;/sort&gt;
+&lt;/Page&gt;</code></pre>
+
+The source-file option <b>must</b> come first, and specifies the source CSV data file (relative to the *.csvst file).  The &lt;Page <i>pageName.html</i>&gt; directives can contain header options that define name-value pairs.  The <i>pageName.html</i> is the exact name of the page to be generated.
+
+The &lt;sort <i>column-name</i>&gt; directives must be nested within the &lt;Page&gt; directives, and define how the data should be sorted.  The order of the &lt;sort&gt; directives defines which column is sorted first.  Within the directive two options can be used: value and empty-value.  The value option is used to map a column value to a sort priority; the lower the priority the higher up in the list it appears.  The empty-value option defines the sort priority to use for an empty value.  If no options are specified the column will be sorted by alphabetical order.
+
+<h3>Template Properties</h3>
+The CSVSortedTables content type provides the CSV data through page/content as a list.  To access column values for a particular row use the name of the column.  As an example the template for the employee csvst file above could be:
+<pre><code>&lt;table&gt;
+  &lt;tr&gt;
+    &lt;th&gt;&lt;a href="employeesByName.html"&gt;Employee Name&lt;/a&gt;&lt;/th&gt;
+    &lt;th&gt;&lt;a href="employeesByLevel.html"&gt;Employee Level&lt;/a&gt;&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr tal:repeat="employee page/content"&gt;
+    &lt;td tal:content="employee/name"&gt;&lt;/td&gt;
+    &lt;td tal:content="employee/level"&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;</code></pre>
+

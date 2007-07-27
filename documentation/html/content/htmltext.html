@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Writing in HTMLText</title>
+	<link href="../../style/site.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<h1>Writing in HTMLText</h1>
+  <p id="subject">Writing PubTal content using HTMLText.</p>
+  <div><p>To write PubTal content in the HTMLText format all you need is a text editor.&nbsp; The file format is very simple: headers are written at the start of the file, followed by a blank line, and then the page body.</p>
+<h2>Headers</h2>
+<p>An unlimited number of headers can be defined, or none at all.&nbsp; The body of the content must be separated from the headers with a single blank line (even when no headers are used).</p>
+<p>An example of some headers:</p>
+<pre><code>title: This is a test.
+description: This test has two test headers.
+
+This is the body of the page.</code></pre>
+<p>When PubTal generates the web page for this content file, it will pass the headers to the template.&nbsp; Headers can also be specified in the configuration file (see <a href="../conf/conf.html">Configuration</a>).&nbsp; If the header in a content file is also in the configuration file, the header in the content file is used.</p>
+<h2>HTML and XHTML</h2>
+<p>If the template's output-type is set to "HTML" then newlines will be replaced with &lt;br&gt; tags.&nbsp; If XHTML is set then &lt;br /&gt; tags will be used instead.&nbsp; PubTal tries to ensure that only valid HTML is published and will report as an error any badly nested HTML present in a document.</p>
+<h2>Template Properties</h2>
+<p>In addition to the properties listed in the <a href="../conf/templates.html">Template Basics</a> section, HTMLText content also generates an additional property: rawContent.</p>
+<p>This is available on the page object (i.e. the TAL path is page/rawContent), and holds a copy of the HTMLText content in its unparsed form.</p>
+<p>To specify which files are treated as HTMLText please refer to the <a href="../conf/conf.html">Configuration</a> section.</p>
+</div>
+	  
+	
+  <div class="navbar">
+  <a href="../index.html" title="Contents">Contents</a>
+  </div>
+  <p id="version">PubTal Version 3.2.0</p>
+  <div id="footer">
+  <p>File: content/htmltext.txt</p>
+  <p>Last modified: Sun, 25 Apr 2004 05:08:18 BST</p>
+  <p>Copyright 2006 Colin Stewart</p>
+  <p title="PubTal is a template driven web site publisher.">Made with <a href="http://www.owlfish.com/software/PubTal/">PubTal</a> 3.2.0</p>
+  </div>
+</body>

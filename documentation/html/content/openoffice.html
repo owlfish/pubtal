@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<title>Writing in OpenOffice</title>
+	<link href="../../style/site.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+<h1>Writing in OpenOffice</h1>
+  <p id="subject">Writing PubTal content using OpenOffice.</p>
+  <div><p>PubTal supports the use of OpenOffice word processing files (.sxw) for authoring web page content.&nbsp; An author does not need to know any HTML to use OpenOffice, and can take advantage of features such as spell checking.</p>
+<p>PubTal supports enough of OpenOffice's features to allow web page content to be authored, but not enough to act as a generic OpenOffice to HTML converter (a function that OpenOffice already has).&nbsp; </p>
+<p>The following subset of OpenOffice document features are supported:</p>
+<ul>
+	<li>Meta data (e.g. title, subject, keywords).</li>
+	<li>Heading levels.</li>
+	<li>Text styles (bold, italic, underline, strikeout, overline, superscript and subscript).</li>
+	<li>Preformatted Text and Source Text (converted to &lt;pre&gt; and &lt;code&gt; respectively).</li>
+	<li>Hyperlinks and Bookmarks (anchors).</li>
+	<li>Images (both embedded and linked).</li>
+	<li>Lists (both bullet lists and numeric lists).</li>
+	<li>Footnotes and endnotes - All treated as endnotes.</li>
+	<li>Tables, including nested tables.</li>
+	<li>Left, right, centre and fully justified paragraph layout.</li>
+</ul>
+<h2>Tips on using OpenOffice</h2>
+<p>There are several tricks to making the best use of OpenOffice for editing PubTal content.&nbsp; Bear these in mind and OpenOffice can provide an excellent environment for writing web content, certainly superior to writing pages in a text editor.</p>
+<h3>Using Styles</h3>
+<p>PubTal supports styles, such as bold and italic, by generating HTML that contains Cascading Style Sheet (CSS) code.&nbsp; PubTal does <b>not</b> reproduce the styling of the original OpenOffice document.&nbsp; Styling, for example on tables, should be done in CSS files that are linked from the template.&nbsp; This allows a common styling to be used across all produced web pages, regardless of the styling used in the individual documents.</p>
+<p>Note that advanced techniques like multiple columns, precise positioning of images, etc. are not supported. </p>
+<h3>Tables</h3>
+<p>Tables in OpenOffice provide optional support for a heading row.&nbsp; PubTal will convert these into &lt;th&gt; HTML tags, which allows a different style to be applied to the heading cells and the body cells.&nbsp; To instruct OpenOffice to use a heading row select the "Header" option in the Insert Table dialog.&nbsp; If a table is generating only &lt;td&gt; tags then its headers have become disabled - highlight the whole table and select "Split Table" to enable them.</p>
+<h3>Links</h3>
+<p>To use a URL to link to another document on the same website (a relative link), the OpenOffice "Document" hyperlink option must be used, not the "Internet" option.&nbsp; This is because OpenOffice treats all links entered using the "Internet" panel of the Hyperlink dialog as being absolute addresses (fine for external links).&nbsp; To check that the correct type of link has been created, enable the Hyperlink Bar using "View -&gt; Toolbars -&gt; Hyperlink Bar".&nbsp; If the hyperlink you have entered begins with "file://" then it is a relative link, otherwise it is an absolute link.</p>
+<h3>Images</h3>
+<p>OpenOffice supports two kinds of images: linked and embedded.</p>
+<h4>Linked Images</h4>
+<p>To add a linked image to a document select the "Insert -&gt; Graphics -&gt; From File..." menu option.&nbsp; Select the "Link" option so that OpenOffice will create a relative link to the image; this is equivalent to using &lt;img src="filename.ext"&gt; in HTML.&nbsp; It is best to keep the image files in the content directory, and use the Binary content-type to copy them into the destination directory (this is configured by default for .jpg, .png, and .gif files).&nbsp; This ensures that the relative links generated in the resulting HTML are correct.</p>
+<p>It is also possible to link to an image on an external system.&nbsp; To do this use the "Link" option described above and select any image file on your system.&nbsp; Once this has been inserted into your document, double click on the image to bring up the Graphics dialogue box.&nbsp; Select the "Graphics" tab, and then put the URL of the image into the File name box.&nbsp; Select the "Type" tab, and then press the "Original Size" button to make OpenOffice take the correct image size.</p>
+<h4>Embedded Images</h4>
+<p>If the "Link" option is <b>not</b> selected when an image is inserted, then OpenOffice will take a copy of it and embed it into the document.&nbsp; When PubTal finds such an image it will extract it, and place it into a directory called "Pictures" in the destination directory.&nbsp; The HTML output page will contain a &lt;img&gt; tag that links to the file inside the Pictures directory.</p>
+<p>PubTal names the individual image files using a combination of the generated HTML page name, and the internal OpenOffice names.&nbsp; This is to avoid embedded images from several documents over-writing each other in the Pictures directory.</p>
+<h4>Notes</h4>
+<p>Images can also be turned into Hyperlinks.&nbsp; To do this, double click on the image, and select the "Hyperlink" tab.&nbsp; The "alt" text for the image can be specified in the "Options" tab.</p>
+<p>PubTal does not support any attempt to align images; they are always created inline in the HTML document.&nbsp; If an image is in a paragraph with the "Preformatted Text" style then PubTal will <b>not</b> produce a corresponding &lt;img&gt; tag in the output HTML.&nbsp; In HTML it is forbidden to have images inside preformatted text.</p>
+<h2>Template Properties</h2>
+<p>When publishing OpenOffice documents PubTal provides additional context to the template used:</p>
+<ul>
+	<li>page/headers/keywords - This path will contain the list of keywords associated with this document.</li>
+	<li>page/footers - This path will contain a list of footnotes and endnotes used in this document.</li>
+</ul>
+<p>Both of these properties are lists, and so need to be iterated over to be useful.&nbsp; The following template snippet demonstrates how this can be done:</p>
+<pre><code>&lt;div&gt;
+&nbsp; &lt;span tal:repeat="keyword page/headers/keywords"&gt;Keyword: &lt;b tal:replace="keyword"&gt;&lt;/b&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&nbsp; &lt;div tal:repeat="footnote page/footnotes" tal:replace="structure footnote"&gt;Foonotes go here.&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>Note that the footnotes in the list contain HTML, and so the "structure" keyword must be used in the tal:replace command.</p>
+<p>To specify which files are treated as OpenOffice documents please refer to the <a href="../conf/conf.html">Configuration</a> section.</p>
+</div>
+	  
+	
+  <div class="navbar">
+  <a href="../index.html" title="Contents">Contents</a>
+  </div>
+  <p id="version">PubTal Version 3.2.0</p>
+  <div id="footer">
+  <p>File: content/openoffice.txt</p>
+  <p>Last modified: Sun, 25 Apr 2004 05:08:18 BST</p>
+  <p>Copyright 2006 Colin Stewart</p>
+  <p title="PubTal is a template driven web site publisher.">Made with <a href="http://www.owlfish.com/software/PubTal/">PubTal</a> 3.2.0</p>
+  </div>
+</body>

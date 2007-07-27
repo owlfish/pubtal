@@ -1,0 +1,157 @@
+PubTal Change Log
+-----------------
+
+Version 3.2.0
+-------------
+New Features:
+ - Changed "hostname" configuration keyword to "url-prefix", making the "absoluteDestinationURL" 
+   property available across all templates
+ - Added support for Atom 1.0 to the weblog plugin
+ - Updated "full-weblog" example atom.xml template to support Atom 1.0
+
+Bug fixes:
+ - Fixed stray "self" in SiteConfiguration (thanks to Luis Rodrigo Gallardo Cruz)
+ - Switch from utf-16 to utf-8 internally to avoid broken SAX library issue
+ 
+Version 3.1.3
+-------------
+New Features:
+ - Special path "readFile" allows page-specific files to be included in the 
+   expanded content.
+   
+Bug fixes:
+ - Textile plugin would fail because the Textile library performs Unicode 
+   conversion.
+   
+Version 3.1.2
+-------------
+Added the automatic generation of &nbsp; characters for HTMLText and OpenOffice
+content.
+
+New Features:
+ - Automatically add &nbsp; as required to the output of HTMLText and OpenOffice
+   content.
+ - Added ability to suppress &nbsp; generation using the new
+   preserve-html-spaces configuration option.
+
+Version 3.1.1
+-------------
+This version includes an updated version of TimeFormat that fixes two 
+major issues.
+
+Bug fixes:
+ - Fixes usage under Windows.
+ - Timezones east of UTC are now handled correctly.
+ 
+Version 3.1.0
+-------------
+New Features:
+ - Date's can now be formated using TimeFormat codes.
+ - Support for plain text output added for HTMLText and OpenOffice.
+ - Weblog support is now included.
+ - Configuration files can now specify file types within sub directories.
+ 
+Bug fixes:
+ - OpenOffice plugin now disables external lookups of DTDs for those 
+   Python XML libraries which support this.
+ - File paths are now converted to UTF-8 before being placed into the 
+   database files.  This fixes crashes under Fedora Core 2.
+ - Unit test cases no longer throw errors under PyXML.
+   
+Version 3.0.1
+-------------
+Bug fix: The setup script was not copying the OpenOffice plugin
+correctly on install.
+
+Version 3.0
+------------
+NOTE: This version of PubTal requires SimpleTAL 3.8 or higher!
+
+New Features:
+ - Upload to an FTP site is now supported.
+ - OpenOffice content can now support Images.
+ - OpenOffice content now produces bidirectional footnotes.
+ - Added the ability to determine which files have really changed, which
+   reduces the number of files PubTal has to upload.
+ - OpenOffice and HTMLText produced nicer HTML output.
+ - HTMLText is stricter about the use of valid HTML.
+ - User interaction is substantially nicer.
+ - Logging can be enabled and sent to a file using command line parameters.
+ - Parts of a site can be given a specific class, which will then not be built
+   without passing a command line parameter.
+ - New CSVSortedTables content type plugin.
+
+Bug fixes:
+ - Using file types in <Template> directives now works correctly (thanks to 
+   Caio Chassot for the bug report).
+ - XHTML output is now correctly written as XML, for templates without XML 
+   declaration.
+ - If a plugin, implemented as a Python module, raises an exception during 
+   import, PubTal will now issue a warning and continue.
+ 
+Version 2.1
+------------
+New Features:
+ - OpenOffice word processor documents can now be used as web page content.
+ - AbiWord documents can now be used as web page content.
+ 
+Bug fixes:
+ - Plugins wrapped in packages now work.
+
+Version 2.0
+-----------
+This version introduces several new features and breaks compatibility with 1.x series
+of configuration files and plugins.  Please refer to the README.txt file for information
+on migrating from 1.x to 2.0 of PubTal.
+
+New Features:
+ - XHTML is now supported!
+ - The new Template configuration directive allows:
+    - template/output character set encoding to be specified
+	- template/output content type to be specified (HTML or XML)
+	- The DOCTYPE for XML template to be specified.
+ - The character-set directive can be specified for different content file types,
+   directories, and files.
+ - Added the ability to suppress the XML Declaration (useful for IE6)
+ - Unified FileType, File and Directory configuration directive into a new Content 
+   directive.
+ - A new SiteConfig option "additional-plugins-dir" allows site specific plugins
+   to be specified.
+ - Two new content-type's are now supported: Binary and Raw.
+   (Thanks to Florian Schulze for the contribution!)
+
+Bug fixes:
+ - The ispage function now works under Windows (thanks to Florian Schulze for the patch)
+ - Various character-set encoding oversights.
+
+Version 1.2
+-----------
+New Features:
+ - Plugins are now supported to make the addition of new content types easier
+ - Textile plugin provides support for content markup using Textile
+ - Catalogues can treat entries as being PubTal content.  This allows the generation of
+   a content page and individual chapter files. (Uses new option 
+   'catalogue-item-content-type')
+ - The generation of <br> elements in HTMLText content can be turned off using the 
+   new option 'htmltext-ignorenewlines'
+ - htmltext-ignorenewlines option added to disable the addition of '<br>'
+    elements for each newline in the content.
+   
+Bug fixes:
+ - Renamed the Catalogue property 'items' to 'entries' to avoid the conflict with the
+   dictionary method of the same name.
+
+  
+Version 1.1
+-----------
+New Features:
+  - Catalogues added - these allow collections of data to be handled (e.g.
+    photos).
+
+Bug fixes:
+  - Almost all HTML elements are now supported in content.
+
+Version 1.0
+-----------
+
+Initial release
