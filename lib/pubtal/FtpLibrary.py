@@ -1,4 +1,4 @@
-import string, os, ftplib, os.path, string
+import string, os, ftplib, os.path, string, time
 
 try:
 	import logging
@@ -65,15 +65,24 @@ class DirectoryMaker:
 				for skipDir in skippedDirs:
 					self.log.debug ("Changing skipped directory to %s" % skipDir)
 					client.cwd (skipDir)
+					self.log.debug ("Sleeping to give the server a rest")
+					time.sleep (0.1)
+					self.log.debug ("Woken up, time to carry on.")
 				skippedDirs = []
 				dirList = FTPDirList (client)
 				if (dirToCheck not in dirList.getList()):
 					# Does not exists!
 					self.log.info ("Directory %s does not exist, creating dir." % currentLocation)
 					client.mkd (dirToCheck)
+					self.log.debug ("Sleeping to give the server a rest")
+					time.sleep (0.1)
+					self.log.debug ("Woken up, time to carry on.")
 				# Add the directory to the cache as one that exists!
 				self.dirCache [os.path.join (curDir, currentLocation)] = 1
 				client.cwd (dirToCheck)
+				self.log.debug ("Sleeping to give the server a rest")
+				time.sleep (0.1)
+				self.log.debug ("Woken up, time to carry on.")
 		if (hadToMove):
 			self.log.debug ("Had to move directories, going back to original.")
 			client.cwd (curDir)
@@ -129,6 +138,7 @@ class FTPUpload:
 	def _getClient_ (self, userInteraction):
 		try:
 			client = ftplib.FTP (self.host, self.username, self.password)
+			client.set_pasv (True)
 		except (ftplib.all_errors), e:
 			self.log.error ("Error connecting to FTP Site: " + str (e))
 			userInteraction.taskError ("Error connecting to FTP Site: " + str (e))

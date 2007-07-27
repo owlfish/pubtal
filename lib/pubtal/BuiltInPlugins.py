@@ -337,7 +337,10 @@ class FTPUploadMethod (SiteUploader.UploadMethod):
 		percentageDone = 0.0
 		incrementSize = 100.0/float (len (fileDict))
 		db = self.getDB()
-		for fName in fileDict.keys():
+		allFiles = fileDict.keys()
+		# Try to keep files together to help FTP performance.
+		allFiles.sort()
+		for fName in allFiles:
 			userInteraction.taskProgress ("Uploading %s" % fName, percentageDone)
 			percentageDone += incrementSize
 			if (self.ftpClient.uploadFile (self.siteConfig.getDestinationDir(), fName, userInteraction)):
