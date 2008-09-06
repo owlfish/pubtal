@@ -1,6 +1,15 @@
 PubTal Change Log
 -----------------
 
+Version 3.2.1
+-------------
+New Features:
+ - Sort files during FTP so that fewer directory changes are required.
+ - Added a short sleep between FTP commands to improve reliability.
+
+Bug fixes:
+ - Change MANIFEST.IN to include the Atom and RSS XML templates.
+
 Version 3.2.0
 -------------
 New Features:
