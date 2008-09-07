@@ -20,7 +20,7 @@
 				<link rel="alternate" type="text/html" tal:attributes="href entry/absolutePermaLink"/>
 				<published tal:content="entry/headers/date/local/%Y-%m-%dT%H:%M:%S%z" />
 				<updated tal:content="entry/headers/date/utc/%Y-%m-%dT%H:%M:%S%z" />
-				<summary type="html" tal:content="entry/content">Content</summary>
+				<content type="html" tal:content="entry/content">Content</content>
 			</entry>
 		</removedTag>
 </feed>

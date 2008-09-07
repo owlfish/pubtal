@@ -1,6 +1,13 @@
 PubTal Change Log
 -----------------
 
+
+Version xxx
+-----------
+New Features:
+ - Changed example template for Atom to use content rather than summary tags.  This 
+   enables better display of the feed in Sage.
+
 Version 3.2.1
 -------------
 New Features:
