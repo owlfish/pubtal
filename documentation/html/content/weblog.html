@@ -29,7 +29,7 @@
 <p>Two examples of how to use the Weblog content type can be found in the examples directory.&nbsp; The basic-weblog example shows the simplest weblog configuration possible, while full-weblog includes all of the features PubTal supports.</p>
 <h2>Configuration Options</h2>
 <p>With no configuration options set the PubTal Weblog plugin will assume the following configuration:</p>
-<ol><li><p>The weblog index template is 'template.html'</p>
+<ol><li><p>The weblog index template is None and no index will be generated.</p>
 </li><li><p>No day, month, or syndication templates exist.</p>
 </li><li><p>The weblog is called 'Weblog'.</p>
 </li><li><p>All *.post files are written in HTMLText format, and are in the same directory that the index will be generated in.</p>
@@ -55,6 +55,8 @@
 <p>The location of the weblog posts is independent of where the resulting day and monthly archive pages are located.</p>
 </td></tr><tr><td><p>weblog-index-size</p>
 </td><td><p>How many posts should be visible on the index page and in the syndication feeds.</p>
+</td></tr><tr><td><p>Weblog-index-disabled</p>
+</td><td><p>Set to True to stop the index page for the weblog being built.</p>
 </td></tr><tr><td><p>weblog-content-type</p>
 </td><td><p>The PubTal content type that posts are written in.&nbsp; Defaults to HTMLText</p>
 </td></tr></tbody></table>
@@ -79,46 +81,46 @@
 <p>In addition to the properties available to any other PubTal template, weblog templates have access to the additional properties, and no content property.</p>
 <h3>Index and Syndication properties.</h3>
 <p>Index and Syndication templates have access to these extra properties.</p>
-<ol><li><p>page</p>
-<ol><li><p>weblog-name.&nbsp; The name of this weblog.</p>
-</li><li><p>weblog-link.&nbsp; The absolute link for this weblog (available if hostname is defined).</p>
-</li><li><p>monthlyArchive.&nbsp; A <a href="#MonthlyArchiveObject">Monthly Archive object</a> holding information useful for providing links to the monthly archives.</p>
-</li><li><p>days.&nbsp; A <a href="#DayObject">Day object</a>, holding information about the days posts.</p>
+<ol><li><p style="margin-left:0inch">page</p>
+<ol><li><p style="margin-left:0inch">weblog-name.&nbsp; The name of this weblog.</p>
+</li><li><p style="margin-left:0inch">weblog-link.&nbsp; The absolute link for this weblog (available if hostname is defined).</p>
+</li><li><p style="margin-left:0inch">monthlyArchive.&nbsp; A <a href="#MonthlyArchiveObject">Monthly Archive object</a> holding information useful for providing links to the monthly archives.</p>
+</li><li><p style="margin-left:0inch">days.&nbsp; A <a href="#DayObject">Day object</a>, holding information about the days posts.</p>
 </li></ol>
 </li></ol>
 <h3>Day properties</h3>
 <p>The Day Template has, in addition to the properties of the Index template, one additional property:</p>
-<ol><li><p>dayDate.&nbsp; This is a Date Object with a default format of "%a[LONG], %d[NP] %b[LONG] %Y".&nbsp; (E.g. Thursday, 8 January 2004)</p>
+<ol><li><p style="margin-left:0inch">dayDate.&nbsp; This is a Date Object with a default format of "%a[LONG], %d[NP] %b[LONG] %Y".&nbsp; (E.g. Thursday, 8 January 2004)</p>
 </li></ol>
 <h3>Month properties</h3>
 <p>The Month Template has, in addition to the properties of the Index template, several additional properties:</p>
-<ol><li><p>yearName.&nbsp; The year this month falls in (YYYY format).</p>
-</li><li><p>monthNameLong.&nbsp; The long form of the month name.</p>
-</li><li><p>monthNameShort.&nbsp; The short form of the month name.</p>
+<ol><li><p style="margin-left:0inch">yearName.&nbsp; The year this month falls in (YYYY format).</p>
+</li><li><p style="margin-left:0inch">monthNameLong.&nbsp; The long form of the month name.</p>
+</li><li><p style="margin-left:0inch">monthNameShort.&nbsp; The short form of the month name.</p>
 </li></ol>
 <h3><a name="MonthlyArchiveObject"></a>Monthly Archive Object</h3>
 <p>Monthly archive objects will only be accessible if a weblog monthly archive is generated, i.e. if the weblog-month-template option is defined.</p>
 <p>A Monthly Archive object is a list, with one entry per year.&nbsp; Only months and years with a weblog post are present in the list.&nbsp; The properties of each entry in the list are:</p>
-<ol><li><p>yearName.&nbsp; The year that this entry is for as YYYY.</p>
-</li><li><p>monthList - List of month information, with one entry per month.</p>
-<ol><li><p>monthNameLong.&nbsp; E.g. January.</p>
-</li><li><p>monthNameShort&nbsp; E.g. Jan.</p>
-</li><li><p>monthNumber.&nbsp; E.g. 1</p>
-</li><li><p>archiveLink.&nbsp; The link from the current page to the archive page for this month.</p>
+<ol><li><p style="margin-left:0inch">yearName.&nbsp; The year that this entry is for as YYYY.</p>
+</li><li><p style="margin-left:0inch">monthList - List of month information, with one entry per month.</p>
+<ol><li><p style="margin-left:0inch">monthNameLong.&nbsp; E.g. January.</p>
+</li><li><p style="margin-left:0inch">monthNameShort&nbsp; E.g. Jan.</p>
+</li><li><p style="margin-left:0inch">monthNumber.&nbsp; E.g. 1</p>
+</li><li><p style="margin-left:0inch">archiveLink.&nbsp; The link from the current page to the archive page for this month.</p>
 </li></ol>
 </li></ol>
 <h3><a name="DayObject"></a>Day Object</h3>
 <p>Day objects are available to all weblog templates as a list in the 'days' property.&nbsp; Each entry in the 'days' list consists of the following properties:</p>
-<ol><li><p>date.&nbsp; This is a Date Object with a default format of "%a[LONG], %d[NP] %b[LONG] %Y".</p>
-</li><li><p>posts.&nbsp; A list of Post Objects that were made during this day.</p>
+<ol><li><p style="margin-left:0inch">date.&nbsp; This is a Date Object with a default format of "%a[LONG], %d[NP] %b[LONG] %Y".</p>
+</li><li><p style="margin-left:0inch">posts.&nbsp; A list of Post Objects that were made during this day.</p>
 </li></ol>
 <h3>Post Object</h3>
 <p>Post objects consist of the same properties that are normally present under the 'page' property for a normal PubTal page of the type used to create the weblog post.&nbsp; Additionally the Post object has the following properties:</p>
-<ol><li><p>permaLink.&nbsp; This is the link to the post within a day page.&nbsp; This is only present if the weblog-day-template configuration property is set.&nbsp; This property is <span style="font-weight:bold">not</span> available in the day template.</p>
-</li><li><p>permaLinkName.&nbsp; This is the hyperlink anchor name that should be used within the day template to provide a permaLink location.&nbsp; This property is <span style="font-weight:bold">only</span> available in the day template.</p>
-</li><li><p>absolutePermaLink.&nbsp; This is the absolute link to the post within a day page.&nbsp; It is only present if the hostname and weblog-day-template configuration properties are set.&nbsp; This property is <span style="font-weight:bold">not</span> available when expanding the day template.</p>
-</li><li><p>date.&nbsp; A Date Object for date/time the weblog post was created.&nbsp; Default to "%I[NP]:%M %p" (i.e. the time in 12 hour format).</p>
-</li><li><p>id.&nbsp; This is only available if the weblog-tag-prefix configuration property is set. Used to uniquely identify this post.</p>
+<ol><li><p style="margin-left:0inch">permaLink.&nbsp; This is the link to the post within a day page.&nbsp; This is only present if the weblog-day-template configuration property is set.&nbsp; This property is <span style="font-weight:bold">not</span> available in the day template.</p>
+</li><li><p style="margin-left:0inch">permaLinkName.&nbsp; This is the hyperlink anchor name that should be used within the day template to provide a permaLink location.&nbsp; This property is <span style="font-weight:bold">only</span> available in the day template.</p>
+</li><li><p style="margin-left:0inch">absolutePermaLink.&nbsp; This is the absolute link to the post within a day page.&nbsp; It is only present if the hostname and weblog-day-template configuration properties are set.&nbsp; This property is <span style="font-weight:bold">not</span> available when expanding the day template.</p>
+</li><li><p style="margin-left:0inch">date.&nbsp; A Date Object for date/time the weblog post was created.&nbsp; Default to "%I[NP]:%M %p" (i.e. the time in 12 hour format).</p>
+</li><li><p style="margin-left:0inch">id.&nbsp; This is only available if the weblog-tag-prefix configuration property is set. Used to uniquely identify this post.</p>
 </li></ol>
 <h2><a name="SyndicationOptions"></a>Options affecting syndication</h2>
 <h3>RSS 0.91 Configuration</h3>
@@ -201,8 +203,8 @@
   <p id="version">PubTal Version 3.2.0</p>
   <div id="footer">
   <p>File: content/weblog.sxw</p>
-  <p>Last modified: Mon, 02 Jan 2006 16:06:49 GMT</p>
-  <p>Copyright 2006 Colin Stewart</p>
-  <p title="PubTal is a template driven web site publisher.">Made with <a href="http://www.owlfish.com/software/PubTal/">PubTal</a> 3.2.0</p>
+  <p>Last modified: Thu, 21 May 2009 12:39:57 CEST</p>
+  <p>Copyright 2009 Colin Stewart</p>
+  <p title="PubTal is a template driven web site publisher.">Made with <a href="http://www.owlfish.com/software/PubTal/">PubTal</a> 3.3</p>
   </div>
 </body>

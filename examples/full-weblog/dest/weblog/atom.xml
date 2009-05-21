@@ -2,13 +2,13 @@
 <feed xml:lang="en" xmlns="http://www.w3.org/2005/Atom">
 		<title>Example Weblog</title>
 		<id>tag:mydomain.com,2004:exampleweblog</id>
-		<link href="http://www.owlfish.com//weblog/" type="text/html" rel="alternate" />
-		<link href="http://www.owlfish.com//weblog/atom.xml" rel="self" />
+		<link href="http://www.mydomain.com/weblog/" type="text/html" rel="alternate" />
+		<link href="http://www.mydomain.com/weblog/atom.xml" rel="self" />
 		<icon>http://www.mydomain.com/rssImage.png</icon>
 		<subtitle type="html">An example weblog</subtitle>
-		<generator uri="http://www.owlfish.com/software/PubTal/" version="3.1.3">PubTal</generator>		
+		<generator uri="http://www.owlfish.com/software/PubTal/" version="3.2.1">PubTal</generator>		
 		
-		<updated>2004-05-24T00:05:28Z</updated>
+		<updated>2007-07-27T17:34:31Z</updated>
 		<author>
 			<name>Anonymous</name>
 		</author>
@@ -17,51 +17,51 @@
 			<entry>
 				<title type="html">How to make Open Office web posts.</title>
 				<id>tag:mydomain.com,2004:exampleweblog.20040523200309</id>
-				<link href="http://www.owlfish.com//weblog/2004/05/23052004.html#20:03:09" type="text/html" rel="alternate" />
-				<published>2004-05-23T20:03:09+01:00</published>
-				<updated>2004-05-23T19:03:09Z</updated>
-				<summary type="html">This is an example of how posts can be made in Open Office.&amp;nbsp; All of the normal Open Office features available expect for images,
+				<link href="http://www.mydomain.com/weblog/2004/05/23052004.html#20:03:09" type="text/html" rel="alternate" />
+				<published>2004-05-23T20:03:09+02:00</published>
+				<updated>2004-05-23T18:03:09Z</updated>
+				<content type="html">This is an example of how posts can be made in Open Office.&amp;nbsp; All of the normal Open Office features available expect for images,
 
 Bold, italic, and hyper links all work however.
-</summary>
+</content>
 			</entry>
 		
 			<entry>
 				<title type="html">A fifth post.</title>
 				<id>tag:mydomain.com,2004:exampleweblog.20040503143700</id>
-				<link href="http://www.owlfish.com//weblog/2004/05/03052004.html#14:37:00" type="text/html" rel="alternate" />
-				<published>2004-05-03T14:37:00+01:00</published>
-				<updated>2004-05-03T13:37:00Z</updated>
-				<summary type="html">This is the fifth post - the next post will push the first one out of the index.
-</summary>
+				<link href="http://www.mydomain.com/weblog/2004/05/03052004.html#14:37:00" type="text/html" rel="alternate" />
+				<published>2004-05-03T14:37:00+02:00</published>
+				<updated>2004-05-03T12:37:00Z</updated>
+				<content type="html">This is the fifth post - the next post will push the first one out of the index.
+</content>
 			</entry>
 		
 			<entry>
 				<title type="html">A fourth post.</title>
 				<id>tag:mydomain.com,2004:exampleweblog.20040502210000</id>
-				<link href="http://www.owlfish.com//weblog/2004/05/02052004.html#21:00:00" type="text/html" rel="alternate" />
-				<published>2004-05-02T21:00:00+01:00</published>
-				<updated>2004-05-02T20:00:00Z</updated>
-				<summary type="html">This is the fourth post.
-</summary>
+				<link href="http://www.mydomain.com/weblog/2004/05/02052004.html#21:00:00" type="text/html" rel="alternate" />
+				<published>2004-05-02T21:00:00+02:00</published>
+				<updated>2004-05-02T19:00:00Z</updated>
+				<content type="html">This is the fourth post.
+</content>
 			</entry>
 		
 			<entry>
 				<title type="html">A third post.</title>
 				<id>tag:mydomain.com,2004:exampleweblog.20040501153700</id>
-				<link href="http://www.owlfish.com//weblog/2004/05/01052004.html#15:37:00" type="text/html" rel="alternate" />
-				<published>2004-05-01T15:37:00+01:00</published>
-				<updated>2004-05-01T14:37:00Z</updated>
-				<summary type="html">This is the third post.
-</summary>
+				<link href="http://www.mydomain.com/weblog/2004/05/01052004.html#15:37:00" type="text/html" rel="alternate" />
+				<published>2004-05-01T15:37:00+02:00</published>
+				<updated>2004-05-01T13:37:00Z</updated>
+				<content type="html">This is the third post.
+</content>
 			</entry><entry>
 				<title type="html">A second post.</title>
 				<id>tag:mydomain.com,2004:exampleweblog.20040501143700</id>
-				<link href="http://www.owlfish.com//weblog/2004/05/01052004.html#14:37:00" type="text/html" rel="alternate" />
-				<published>2004-05-01T14:37:00+01:00</published>
-				<updated>2004-05-01T13:37:00Z</updated>
-				<summary type="html">This is the second post.
-</summary>
+				<link href="http://www.mydomain.com/weblog/2004/05/01052004.html#14:37:00" type="text/html" rel="alternate" />
+				<published>2004-05-01T14:37:00+02:00</published>
+				<updated>2004-05-01T12:37:00Z</updated>
+				<content type="html">This is the second post.
+</content>
 			</entry>
 		
 </feed>

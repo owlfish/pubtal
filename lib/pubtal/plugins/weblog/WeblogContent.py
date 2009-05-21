@@ -1,6 +1,6 @@
 """ Weblog plugin for PubTal
 
-	Copyright (c) 2004 Colin Stewart (http://www.owlfish.com/)
+	Copyright (c) 2009 Colin Stewart (http://www.owlfish.com/)
 	All rights reserved.
 		
 	Redistribution and use in source and binary forms, with or without
@@ -534,6 +534,8 @@ class WeblogManager:
 		pageList = []
 		self.log.info ("Determing pages to build for input page %s" % str (page.getRelativePath()))
 		buildAllClasses = options.get ('buildAllClasses', 0)
+		# Check whether we have disabled the weblog index build
+		indexBuildDisabled = page.getBooleanOption ('weblog-index-disabled', False)
 		monthlyTemplate = page.getOption ('weblog-month-template', None)
 		indexTemplate = page.getOption ('weblog-index-template', "template.html")
 		dayTemplate = page.getOption ('weblog-day-template', None)
@@ -657,7 +659,7 @@ class WeblogManager:
 					syndicationPage.setOption ('pageName', 'syndication.xml')
 					pageList.append (syndicationPage)
 					weblog.noteGeneratedPage ("syndication.xml")
-			if (not weblog.isPageGenerated (indexTemplate)):
+			if (not (indexBuildDisabled or weblog.isPageGenerated (indexTemplate))):
 				self.log.info ("Generating index page to be built")
 				indexPage = page.getDuplicatePage (page.getSource())
 				indexPage.setName ('%s Index.' % weblogName)

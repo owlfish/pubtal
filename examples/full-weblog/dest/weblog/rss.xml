@@ -2,20 +2,20 @@
 <rss version="0.91">
 	<channel>
 		<title>Example Weblog</title>
-		<link>http://www.owlfish.com//weblog/</link>
+		<link>http://www.mydomain.com/weblog/</link>
 		<description>An example weblog</description>
 		
 		<language>en</language>
-		<lastBuildDate>Mon, 24 May 2004 01:05:28 BST</lastBuildDate>
+		<lastBuildDate>Fri, 27 Jul 2007 19:34:31 CEST</lastBuildDate>
 		<image>
 			<title>Example Weblog</title>
 			<url>http://www.mydomain.com/rssImage.png</url>
-			<link>http://www.owlfish.com//weblog/</link>
+			<link>http://www.mydomain.com/weblog/</link>
 		</image>
 		
 			<item>
 				<title>How to make Open Office web posts.</title>
-				<link>http://www.owlfish.com//weblog/2004/05/23052004.html#20:03:09</link>
+				<link>http://www.mydomain.com/weblog/2004/05/23052004.html#20:03:09</link>
 			<description>This is an example of how posts can be made in Open Office.&amp;nbsp; All of the normal Open Office features available expect for images,
 
 Bold, italic, and hyper links all work however.
@@ -24,26 +24,26 @@ Bold, italic, and hyper links all work however.
 		
 			<item>
 				<title>A fifth post.</title>
-				<link>http://www.owlfish.com//weblog/2004/05/03052004.html#14:37:00</link>
+				<link>http://www.mydomain.com/weblog/2004/05/03052004.html#14:37:00</link>
 			<description>This is the fifth post - the next post will push the first one out of the index.
 </description>
 			</item>
 		
 			<item>
 				<title>A fourth post.</title>
-				<link>http://www.owlfish.com//weblog/2004/05/02052004.html#21:00:00</link>
+				<link>http://www.mydomain.com/weblog/2004/05/02052004.html#21:00:00</link>
 			<description>This is the fourth post.
 </description>
 			</item>
 		
 			<item>
 				<title>A third post.</title>
-				<link>http://www.owlfish.com//weblog/2004/05/01052004.html#15:37:00</link>
+				<link>http://www.mydomain.com/weblog/2004/05/01052004.html#15:37:00</link>
 			<description>This is the third post.
 </description>
 			</item><item>
 				<title>A second post.</title>
-				<link>http://www.owlfish.com//weblog/2004/05/01052004.html#14:37:00</link>
+				<link>http://www.mydomain.com/weblog/2004/05/01052004.html#14:37:00</link>
 			<description>This is the second post.
 </description>
 			</item>
