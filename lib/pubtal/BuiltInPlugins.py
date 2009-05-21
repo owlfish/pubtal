@@ -117,8 +117,8 @@ class CataloguePublisher (SitePublisher.ContentPublisher):
 		for itemHeaders in catalogue.getItems():
 			# Destination paths
 			filename = itemHeaders.get ('filename', None)
-			if (filename is None):
-				msg = "Unable to publish catalogue %s.  Missing filename header in catalogue." % page.getSource()
+			if (filename is None and buildItemPages):
+				msg = "Unable to publish catalogue %s.  Missing filename header in catalogue but item publishing is enabled." % page.getSource()
 				self.log.error (msg)
 				raise SitePublisher.PublisherException (msg)
 
@@ -126,49 +126,52 @@ class CataloguePublisher (SitePublisher.ContentPublisher):
 			actualHeaders.update (page.getHeaders())
 			actualHeaders.update (itemHeaders)
 			
-			# Used to determine the file to write to, kept in case the pageContext doesn't contain them.
-			relativeDestPath = os.path.join (localDestinationDir, os.path.splitext (filename)[0] + '.html')
-			destPath = os.path.join (self.destDir, relativeDestPath)
-			
-			if (itemContentPublisher is not None):
-				self.log.debug ("Retrieving page context for this catalogue entry.")
-				
-				# We need a page for this entry so that we can get it's content.
-				itemPageList = self.contentConfig.getPages (os.path.join (contentDir, filename), {})
-				
-				if (len (itemPageList) > 1):
-					self.ui.warn ("Catalogue contains content type that returns more than one page!  Only building first page.")
-				itemPage = itemPageList [0]
-				
-				pageContext = itemContentPublisher.getPageContext (itemPage, itemTemplate)
-				actualHeaders.update (pageContext.get ('headers', {}))
-				pageContext ['headers'] = actualHeaders
-				if (not pageContext.has_key ('destinationPath')):
-					pageContext ['destinationPath'] = relativeDestPath
-				if (not pageContext.has_key ('absoluteDestinationPath')):
-					pageContext ['absoluteDestinationPath'] = destPath
-			else:
-				self.log.debug ("No content type for this catalogue entry - just publish what we have.")
-				
-				# Get the generic page information for this file
-				relativeDestPath = os.path.join (localDestinationDir, os.path.splitext (filename)[0] + '.' + itemTemplate.getTemplateExtension())
+			if (filename is not None):
+				# Used to determine the file to write to, kept in case the pageContext doesn't contain them.
+				relativeDestPath = os.path.join (localDestinationDir, os.path.splitext (filename)[0] + '.html')
 				destPath = os.path.join (self.destDir, relativeDestPath)
-				destFilename = os.path.basename (destPath)
-				actualHeaders = {}
-				actualHeaders.update (page.getHeaders())
-				actualHeaders.update (itemHeaders)
 				
-				pageContext = {'lastModifiedDate': lastModDate
-							,'copyrightYear': copyrightYear
-							,'sourcePath': relativeSourcePath
-							,'absoluteSourcePath': absSourcePath
-							,'destinationPath': relativeDestPath
-							,'absoluteDestinationPath': destPath
-							,'destinationFilename': destFilename
-							,'depth': depth
-							,'headers': actualHeaders
-							}
-				
+				if (itemContentPublisher is not None):
+					self.log.debug ("Retrieving page context for this catalogue entry.")
+					
+					# We need a page for this entry so that we can get it's content.
+					itemPageList = self.contentConfig.getPages (os.path.join (contentDir, filename), {})
+					
+					if (len (itemPageList) > 1):
+						self.ui.warn ("Catalogue contains content type that returns more than one page!  Only building first page.")
+					itemPage = itemPageList [0]
+					
+					pageContext = itemContentPublisher.getPageContext (itemPage, itemTemplate)
+					actualHeaders.update (pageContext.get ('headers', {}))
+					pageContext ['headers'] = actualHeaders
+					if (not pageContext.has_key ('destinationPath')):
+						pageContext ['destinationPath'] = relativeDestPath
+					if (not pageContext.has_key ('absoluteDestinationPath')):
+						pageContext ['absoluteDestinationPath'] = destPath
+				else:
+					self.log.debug ("No content type for this catalogue entry - just publish what we have.")
+					
+					# Get the generic page information for this file
+					relativeDestPath = os.path.join (localDestinationDir, os.path.splitext (filename)[0] + '.' + itemTemplate.getTemplateExtension())
+					destPath = os.path.join (self.destDir, relativeDestPath)
+					destFilename = os.path.basename (destPath)
+					actualHeaders = {}
+					actualHeaders.update (page.getHeaders())
+					actualHeaders.update (itemHeaders)
+					
+					pageContext = {'lastModifiedDate': lastModDate
+								,'copyrightYear': copyrightYear
+								,'sourcePath': relativeSourcePath
+								,'absoluteSourcePath': absSourcePath
+								,'destinationPath': relativeDestPath
+								,'absoluteDestinationPath': destPath
+								,'destinationFilename': destFilename
+								,'depth': depth
+								,'headers': actualHeaders
+								}
+			else:
+				# No filename specified for this entry
+				pageContext = {'headers': actualHeaders}
 			items.append (pageContext)
 			if (len (col) == maxCols):
 				rows.append (col)

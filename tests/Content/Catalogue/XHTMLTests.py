@@ -48,6 +48,7 @@ root = logging.getLogger()
 root.setLevel (logging.WARN)
 
 INDEX_TEMPLATE = '<?xml version="1.0" encoding="iso-8859-15"?>\n<html><body><h1 tal:content="page/headers/title"></h1> <div tal:repeat="item catalogue/entries" tal:content="item/headers/title"></div></body></html>'
+INDEX_TEMPLATE2 = '<?xml version="1.0" encoding="iso-8859-15"?>\n<html><body><h1 tal:content="page/headers/title"></h1> <div tal:repeat="item catalogue/entries"><h2 tal:content="item/headers/title"></h2><p tal:content="item/headers/value"></p></div></body></html>'
 ITEM_TEMPLATE = '<?xml version="1.0" encoding="iso-8859-15"?>\n<html><body><h1 tal:content="page/headers/title"></h1> <div tal:condition="exists: page/content" tal:content="structure page/content"></div> <a tal:condition="exists: catalogue/previous" tal:attributes="href catalogue/previous/destinationFilename">Previous</a> <a tal:condition="exists: catalogue/next" tal:attributes="href catalogue/next/destinationFilename">Next</a></body></html>'
 CATALOGUE = """title: Testing Catalogue
 
@@ -57,6 +58,16 @@ title: Cat one
 filename: two.txt
 title: Cat two
 """
+
+CATALOGUE2 = """title: Index only Catalogue
+
+title: Index only catalogue one
+value: 100
+
+title: Index only catalogue two
+value: 200
+"""
+
 ONE_TXT = """title: Item One
 
 This is the <b>first</b> item!
@@ -109,6 +120,21 @@ So there!<br />
 <html><body><h1>Item Two</h1> <div><p>This is the second item!</p>
 </div> <a href="one.xhtml">Previous</a> </body></html>"""}
 
+CONFIG3 = """<SiteConfig>
+# Ignore the .txt files because we publish them as part of the catalogue.
+ignore-filter .*\.txt
+</SiteConfig>
+<Content>
+catalogue-build-pages index
+catalogue-index-template template.xhtml
+</Content>
+
+<Template>
+output-type XHTML
+</Template>"""
+RESULT3 = {'index.xhtml': """<?xml version="1.0" encoding="iso-8859-15"?>
+<html><body><h1>Index only Catalogue</h1> <div><h2>Index only catalogue one</h2><p>100</p></div><div><h2>Index only catalogue two</h2><p>200</p></div></body></html>"""}
+
 class XHTMLTestCases (unittest.TestCase):
 	def setUp (self):
 		self.site = SiteUtils.SiteBuilder()
@@ -144,6 +170,12 @@ class XHTMLTestCases (unittest.TestCase):
 		self.site.createContent ('two.txt', TWO_TXT)
 		self.site.createConfigFile ('test.config', CONFIG2)
 		self._runTest_ (RESULT2)
+		
+	def testIndexOnlyCatalogue (self):
+		self.site.createTemplate ('template.xhtml', INDEX_TEMPLATE2)
+		self.site.createContent ('index.catalogue', CATALOGUE2)
+		self.site.createConfigFile ('test.config', CONFIG3)
+		self._runTest_ (RESULT3)
 		
 if __name__ == '__main__':
 	unittest.main()

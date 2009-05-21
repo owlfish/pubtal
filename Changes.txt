@@ -8,6 +8,7 @@ New Features:
  - Changed example template for Atom to use content rather than summary tags.  This 
    enables better display of the feed in Sage.
  - Added new option "weblog-index-disabled" to allow the index page of a weblog to be disabled.
+ - Made filename optional for catalogue entries when catalogue-build-pages disables item page build.
 
 Bug fixes:
  - Added TR to the list of allowed tags with TABLE element.

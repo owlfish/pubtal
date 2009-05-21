@@ -17,7 +17,7 @@ filename: two.jpg
 title: My second photo
 description: A second photo.</code></pre>
 
-The only name-value pair that must be present for each item in a Catalogue is <dfn>filename</dfn>.  If PubTal is configured to generate one web page for each item in the catalogue (the default), it will use the filename given for each item, changing the extension to that of the template file.
+If item page creation (controlled with catalogue-build-pages) is enabled then the name-value pair <dfn>filename</dfn> must be present for each item in the Catalogue.  If PubTal is configured to generate one web page for each item in the catalogue (the default), it will use the filename given for each item, changing the extension to that of the template file.
 
 PubTal can also be configured to generate an index HTML page for the Catalogue (again enabled by default).  This master page will use the name of the catalogue file, changing the extension to that of the template file.
 

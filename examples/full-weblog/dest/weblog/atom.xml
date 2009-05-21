@@ -6,7 +6,7 @@
 		<link href="http://www.mydomain.com/weblog/atom.xml" rel="self" />
 		<icon>http://www.mydomain.com/rssImage.png</icon>
 		<subtitle type="html">An example weblog</subtitle>
-		<generator uri="http://www.owlfish.com/software/PubTal/" version="3.2.1">PubTal</generator>		
+		<generator uri="http://www.owlfish.com/software/PubTal/" version="3.3">PubTal</generator>		
 		
 		<updated>2007-07-27T17:34:31Z</updated>
 		<author>
