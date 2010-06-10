@@ -1,4 +1,4 @@
-PubTal 3.3
+PubTal 3.4
 ------------
 A template driven web site builder for small sites.
 

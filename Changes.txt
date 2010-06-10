@@ -1,6 +1,12 @@
 PubTal Change Log
 -----------------
 
+Version 3.4
+-----------
+Bug fixes:
+ - File seperator characters (e.g. /) can now be used in weblog title names.
+ - Replaced use of md5 module with hashlib
+ - Wrapped all instances of a String being raised as an exception with the Exception class.
 
 Version 3.3
 -----------
