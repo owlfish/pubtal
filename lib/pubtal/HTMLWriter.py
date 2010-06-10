@@ -130,7 +130,7 @@ class HTMLWriter:
 			msg = "HTML element %s is not supported!" % elementName
 			self.log.warn (msg)
 			if (self.exceptionOnError):
-				raise msg
+				raise Exception (msg)
 		
 	def endElement (self, elementName):
 		if (self.skipDepth != 0):
@@ -295,7 +295,7 @@ class PlainTextWriter (HTMLWriter):
 			msg = "HTML element %s is not supported!" % elementName
 			self.log.warn (msg)
 			if (self.exceptionOnError):
-				raise msg
+				raise Exception (msg)
 		
 	def endElement (self, elementName):
 		if (self.skipDepth != 0):

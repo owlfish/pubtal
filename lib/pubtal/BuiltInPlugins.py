@@ -308,7 +308,7 @@ class FTPUploadMethod (SiteUploader.UploadMethod):
 			conf = 'username'
 			self.username = uploadConfig [conf]
 		except:
-			raise "Missing FTP configuration option %s" % conf
+			raise Exception ("Missing FTP configuration option %s" % conf)
 		self.password = uploadConfig.get ('password', None)
 		self.initialDir = uploadConfig.get ('base-dir')
 		

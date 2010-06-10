@@ -29,7 +29,7 @@
 
 """
 
-import anydbm, os, os.path, re, time, string, md5, codecs
+import anydbm, os, os.path, re, time, string, hashlib, codecs
 from pubtal import timeformat
 
 FIELDREGEX=re.compile ('(?<!,),(?!,)')
@@ -228,7 +228,7 @@ class WeblogPostData:
 		
 	def getPostChecksum (self, page):
 		""" Checksum the physical post file. """
-		sum = md5.new()
+		sum = hashlib.md5()
 		readFile = open (page.getSource(), 'r')
 		while 1:
 			buffer = readFile.read(1024*1024)
@@ -382,7 +382,7 @@ class WeblogDatabase:
 		if (not os.path.exists (dataDir)):
 			self.log.info ("Creating PubTal Data directory %s" % dataDir)
 			os.makedirs (dataDir)
-		dataDB = anydbm.open (os.path.join (dataDir, 'weblog-state-%s' % self.weblogName), 'c')
+		dataDB = anydbm.open (os.path.join (dataDir, 'weblog-state-%s' % self.weblogName.replace (os.path.sep, '-')), 'c')
 		self.dataDB = dataDB
 		for key in dataDB.keys():
 			if (key.startswith ('POST:')):

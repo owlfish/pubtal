@@ -34,7 +34,7 @@ try:
 except:
 	import InfoLogging as logging
 	
-import time, codecs, os, os.path, md5
+import time, codecs, os, os.path, hashlib
 
 from simpletal import simpleTAL, simpleTALES, simpleTALUtils
 import pubtal
@@ -180,7 +180,7 @@ class MD5File:
 	"""
 	def __init__ (self, filePath, relativeOutputPath, mode, dictionary):
 		self.dictionary = dictionary
-		self.ourmd5 = md5.new()
+		self.ourmd5 = hashlib.md5()
 		self.ourFile = open (filePath, mode)
 		# We need to transform the path name into ascii compatible strings for some anydbm implementations.
 		utfencode = codecs.lookup ("utf8")[0]

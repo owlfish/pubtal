@@ -34,7 +34,7 @@ try:
 except:
 	import InfoLogging as logging
 	
-import os, os.path, copy, md5, getpass
+import os, os.path, copy, hashlib, getpass
 import xml.sax, xml.sax.handler, StringIO
 
 class BlockFilter:
@@ -270,7 +270,7 @@ class XMLChecksumHandler (xml.sax.handler.ContentHandler, xml.sax.handler.DTDHan
 		self.ourParser = parser
 		
 	def startDocument (self):
-		self.digest = md5.new()
+		self.digest = hashlib.md5()
 		
 	def startPrefixMapping (self, prefix, uri):
 		self.digest.update (prefix)

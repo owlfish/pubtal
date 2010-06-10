@@ -34,7 +34,7 @@ try:
 except:
 	import InfoLogging as logging
 	
-import os, os.path, copy, md5, getpass, codecs
+import os, os.path, copy, hashlib, getpass, codecs
 		
 class UploadMethod:
 	""" An upload method should implement these methods, although
@@ -214,7 +214,7 @@ class SiteUploader:
 		return (relativePath, curChecksum)
 		
 	def _getChecksum_ (self, path):
-		sum = md5.new()
+		sum = hashlib.md5()
 		readFile = open (path, 'r')
 		while 1:
 			buffer = readFile.read(1024*1024)
