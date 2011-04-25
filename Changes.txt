@@ -1,6 +1,11 @@
 PubTal Change Log
 -----------------
 
+Version 3.5
+-----------
+Bug fixes:
+ - Updated Textile plugin to work with python-textile 2.1.4 (thanks to Rodrigo Gallardo for the fix)
+
 Version 3.4
 -----------
 Bug fixes:

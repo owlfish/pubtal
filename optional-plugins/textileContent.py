@@ -75,28 +75,17 @@ class TextilePagePublisher (SitePublisher.ContentPublisher):
 	def getPageContext (self, page, template):
 		pageMap = SitePublisher.ContentPublisher.getPageContext (self, page, template)
 		
-		# We need to preserve the original character set because Textile does it's own conversion.
-		headers, rawContent = self.readHeadersAndContent(page, preserveCharacterSet = 1)
-		pageCharSet = page.getOption ('character-set', None)
-		if (pageCharSet is None):
-			pageCharSet = self.characterSet
-		pageCharSetDecoder = codecs.lookup (pageCharSet)[1]
+		# Version 2.1.4 of python-textile no longer does character set conversion
+		headers, rawContent = self.readHeadersAndContent(page)
 				
-		# Pass in the encoding of the file, and get output in utf-16
-		content = textile.textile (rawContent, encoding=pageCharSet, output="utf16")
-		# Now convert the body from utf16 back to Unicode
-		content = utf16Decoder (content)[0]
-		# Now convert al l the headers (would normally have been done in readHeadersAndContent)
-		convHeaders = {}
-		for headerName, headerValue in headers.items():
-			convHeaders [pageCharSetDecoder(headerName)[0]] = pageCharSetDecoder (headerValue)[0]
+		content = textile.textile (rawContent)
 		
 		actualHeaders = pageMap ['headers']
-		actualHeaders.update (convHeaders)
+		actualHeaders.update (headers)
 		pageMap ['headers'] = actualHeaders
 		pageMap ['content'] = content
 		# Raw content wasn't converted
-		pageMap ['rawContent'] = pageCharSetDecoder (rawContent)[0]
+		pageMap ['rawContent'] = rawContent
 		
 		return pageMap
 		

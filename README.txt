@@ -1,5 +1,5 @@
-PubTal 3.4
-------------
+PubTal 3.5
+----------
 A template driven web site builder for small sites.
 
 Installation
