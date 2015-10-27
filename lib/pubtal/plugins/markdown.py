@@ -33,7 +33,7 @@ try:
 except:
 	import InfoLogging as logging
 	
-import SitePublisher
+from pubtal import SitePublisher
 
 try:
 	import markdown2
@@ -41,7 +41,6 @@ except:
 	pass
 
 import os, time, anydbm, codecs
-import timeformat
 from simpletal import simpleTAL, simpleTALES
 						
 # getPluginInfo provides the list of built-in supported content.
